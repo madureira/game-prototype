@@ -56,35 +56,35 @@ To be able to build and run our project, we need to configure it. So, let's star
 ### *Configuring the include paths*
 1. On left-side, select **VC++ Directories**
 1. Now, in right-side, edit the field **Include Directories**. A modal is gonna open. Now add this folders, each on a different line:
-```
-$(SolutionDir)dependencies\SDL2-2.0.5\include
-$(SolutionDir)dependencies\SDL2_image-2.0.1\include
-$(Solutiondir)dependencies\SDL2_mixer-2.0.1\include
-$(SolutionDir)dependencies\SDL2_ttf-2.0.14\include
-$(SolutionDir)dependencies\glm
-```
+  ```
+  $(SolutionDir)dependencies\SDL2-2.0.5\include
+  $(SolutionDir)dependencies\SDL2_image-2.0.1\include
+  $(Solutiondir)dependencies\SDL2_mixer-2.0.1\include
+  $(SolutionDir)dependencies\SDL2_ttf-2.0.14\include
+  $(SolutionDir)dependencies\glm
+  ```
 1. Hit the button **OK** to close modal and hit the button **Apply**
 
 
 ### *Configuring Linker*
 1. On left-side, expand **Linker** and select **General**
 1. Edit the field: **Additional Library Directories**. A modal is gonna open, so, include the follow paths, each on a different line:
-```
-$(SolutionDir)dependencies\SDL2-2.0.5\lib\x86
-$(SolutionDir)dependencies\SDL2_image-2.0.1\lib\x86
-$(SolutionDir)dependencies\SDL2_mixer-2.0.1\lib\x86
-$(SolutionDir)dependencies\SDL2_ttf-2.0.14\lib\x86
-```
+  ```
+  $(SolutionDir)dependencies\SDL2-2.0.5\lib\x86
+  $(SolutionDir)dependencies\SDL2_image-2.0.1\lib\x86
+  $(SolutionDir)dependencies\SDL2_mixer-2.0.1\lib\x86
+  $(SolutionDir)dependencies\SDL2_ttf-2.0.14\lib\x86
+  ```
 1. Hit the button **OK** to close modal and hit the button **Apply**
 1. On left-side, expand **Linker** and now select **Input**
 1. Edit the field: **Additional Dependencies**. A modal is gonna open, so, include the follow libraries:
-```
-SDL2.lib
-SDL2main.lib
-SDL2_image.lib
-SDL2_mixer.lib
-SDL2_ttf.lib
-```
+  ```
+  SDL2.lib
+  SDL2main.lib
+  SDL2_image.lib
+  SDL2_mixer.lib
+  SDL2_ttf.lib
+  ```
 1. Hit the button **OK** to close modal and hit the button **Apply**
 1. On left-side, expand **Linker** and now select **System**
 1. Edit the field: **SubSystem** and choose the option: `Console (/SUBSYSTEM:CONSOLE)`
