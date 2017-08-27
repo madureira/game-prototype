@@ -19,9 +19,9 @@ This structure is built using the following tools:
 * [nlohmann/json](https://github.com/nlohmann/json)
 
 ## Importing the project
-If you use **Microsoft Visual Studio Community 2017** to develop, follow the steps bellow.
+If you use [Microsoft Visual Studio Community 2017](https://www.visualstudio.com) to develop, follow the steps bellow.
 
-1. Open Visual Studio
+1. Open Visual Studio IDE
 1. On menu bar, select: **File > New > Project...**
 1. On left-side, select **Templates** and **Visual C++**
 1. On right-side, select: **Empty Project**
