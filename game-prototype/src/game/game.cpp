@@ -6,7 +6,9 @@ namespace game {
 	{
 		static const int WINDOW_WIDTH = 1280;
 		static const int WINDOW_HEIGHT = 720;
-		static const bool FULLSCREEN = true;
+		static const bool FULLSCREEN = false;
+		static const bool SHOW_FPS = false;
+		static const bool SHOW_COLLISIONS = false;
 
 		Window window("Game", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN);
 		Renderer* renderer = window.createRenderer();
@@ -102,8 +104,17 @@ namespace game {
 			renderer->draw(&levelSprite1);
 			renderer->draw(player.getSprite());
 			renderer->draw(&levelSprite2);
-			renderer->showCollisions(collisions, viewport);
-			fps->show();
+
+			if (SHOW_COLLISIONS)
+			{
+				renderer->showCollisions(collisions, viewport);
+			}
+
+			if (SHOW_FPS)
+			{
+				fps->show();
+			}
+
 			renderer->render();
 		}
 	}
