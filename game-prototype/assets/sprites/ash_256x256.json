@@ -1,0 +1,241 @@
+{
+  "frames": [
+    {
+      "filename": "player 0.ase",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 1.ase",
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 2.ase",
+      "frame": {
+        "x": 64,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 3.ase",
+      "frame": {
+        "x": 128,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 4.ase",
+      "frame": {
+        "x": 192,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 5.ase",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 6.ase",
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 7.ase",
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 8.ase",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 9.ase",
+      "frame": {
+        "x": 0,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 10.ase",
+      "frame": {
+        "x": 64,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 11.ase",
+      "frame": {
+        "x": 128,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 12.ase",
+      "frame": {
+        "x": 192,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 13.ase",
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 14.ase",
+      "frame": {
+        "x": 64,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 15.ase",
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    },
+    {
+      "filename": "player 16.ase",
+      "frame": {
+        "x": 192,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "duration": 100
+    }
+  ],
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.1.13",
+    "image": "C:\\Users\\rafael\\projects\\workspace\\game\\game\\assets\\sprites\\ash_256x256.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 256,
+      "h": 256
+    },
+    "scale": "1",
+    "frameTags": [
+      {
+        "name": "idle",
+        "from": 0,
+        "to": 0,
+        "direction": "forward"
+      },
+      {
+        "name": "walk_up",
+        "from": 1,
+        "to": 4,
+        "direction": "forward"
+      },
+      {
+        "name": "walk_down",
+        "from": 5,
+        "to": 8,
+        "direction": "forward"
+      },
+      {
+        "name": "walk_left",
+        "from": 9,
+        "to": 12,
+        "direction": "forward"
+      },
+      {
+        "name": "walk_right",
+        "from": 13,
+        "to": 16,
+        "direction": "forward"
+      }
+    ],
+    "layers": [
+      {
+        "name": "idle",
+        "opacity": 255,
+        "blendMode": "normal"
+      }
+    ]
+  }
+}
