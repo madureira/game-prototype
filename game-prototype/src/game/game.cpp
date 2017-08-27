@@ -56,15 +56,9 @@ namespace game {
 		renderer->setLayerTarget(levelLayer1);
 		renderer->clear();
 		for (auto const& tile : layer1) {
-			// draw only visible tiles
-			//if (tile.second.x + tile.second.w * 2 >= (viewport.x*-1) + tile.second.w &&
-			//	tile.second.y + tile.second.h * 2 >= (viewport.y*-1) + tile.second.h &&
-			//	tile.second.x <= (viewport.x*-1) + viewport.w &&
-			//	tile.second.y <= (viewport.y*-1) + viewport.h) {
-				layerSprite1.setSrcRect(tile.first);
-				layerSprite1.setDestRect(tile.second);
-				renderer->draw(&layerSprite1);
-			//}
+			layerSprite1.setSrcRect(tile.first);
+			layerSprite1.setDestRect(tile.second);
+			renderer->draw(&layerSprite1);
 		}
 		renderer->setLayerTarget(NULL);
 
@@ -72,15 +66,9 @@ namespace game {
 		renderer->setLayerTarget(levelLayer2);
 		renderer->clear();
 		for (auto const& tile : layer2) {
-			// draw only visible tiles
-			//if (tile.second.x + tile.second.w * 2 >= (viewport.x*-1) + tile.second.w &&
-			//	tile.second.y + tile.second.h * 2 >= (viewport.y*-1) + tile.second.h &&
-			//	tile.second.x <= (viewport.x*-1) + viewport.w &&
-			//	tile.second.y <= (viewport.y*-1) + viewport.h) {
-				layerSprite2.setSrcRect(tile.first);
-				layerSprite2.setDestRect(tile.second);
-				renderer->draw(&layerSprite2);
-			//}
+			layerSprite2.setSrcRect(tile.first);
+			layerSprite2.setDestRect(tile.second);
+			renderer->draw(&layerSprite2);
 		}
 		renderer->setLayerTarget(NULL);
 
