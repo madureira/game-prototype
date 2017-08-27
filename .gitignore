@@ -1,7 +1,8 @@
 # Binary files
-bin/
+bin/Debug/*
 !bin/Debug/debug.txt
-!bin/Release/debug.txt
+bin/Release/*
+!bin/Release/release.txt
 
 # Visual Studio
 .vs/
