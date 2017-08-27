@@ -7,6 +7,8 @@ To facilitate game development, the framework integrates with some useful tools:
 * [Tiled Map Editor](http://www.mapeditor.org/) (Used to build maps based on tiles)
 * [Aseprite](https://www.aseprite.org/) (Used to generates sprites and animations)
 
+![game-test](http://github.com/madureira/game-prototype/blob/master/game-prototype/assets/game-prototype.gif)
+
 ## Dependencies
 This structure is built using the following libraries:
 * [SDL2](https://www.libsdl.org/)
