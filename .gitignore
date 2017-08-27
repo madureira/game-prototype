@@ -1,0 +1,11 @@
+# Binary files
+bin/
+!bin/Debug/debug.txt
+!bin/Release/debug.txt
+
+# Visual Studio
+.vs/
+game-prototype.sln
+game-prototype/game-prototype.vcxproj
+game-prototype/game-prototype.vcxproj.filters
+game-prototype/game-prototype.vcxproj.user
