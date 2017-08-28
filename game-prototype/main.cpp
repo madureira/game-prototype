@@ -1,5 +1,7 @@
 #ifndef _DEBUG
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#else
+#define DEBUG = 1
 #endif
 
 #include <SDL2/SDL.h>

@@ -4,11 +4,20 @@ namespace game {
 
 	Game::Game()
 	{
-		static const int WINDOW_WIDTH = 1280;
-		static const int WINDOW_HEIGHT = 720;
+#ifdef DEBUG
 		static const bool FULLSCREEN = false;
+		static const bool SHOW_FPS = true;
+		static const bool SHOW_COLLISIONS = true;
+		static const bool PLAY_AUDIO = false;
+#else
+		static const bool FULLSCREEN = true;
 		static const bool SHOW_FPS = false;
 		static const bool SHOW_COLLISIONS = false;
+		static const bool PLAY_AUDIO = true;
+#endif
+
+		static const int WINDOW_WIDTH = 1280;
+		static const int WINDOW_HEIGHT = 720;
 
 		Window window("Game", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN);
 		Renderer* renderer = window.createRenderer();
@@ -19,9 +28,31 @@ namespace game {
 
 		AudioManager audioManager;
 		audioManager.load("pokemon", "assets/sounds/Pokemon_Opening.wav", MUSIC);
+		SDL_Rect playerPos = level.getPlayerPosition();
 
-		SDL_Rect viewport = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+		int cameraX = playerPos.x - WINDOW_WIDTH / 2;
+		int cameraY = playerPos.y - WINDOW_HEIGHT / 2;
+
+		if (cameraX < 0) {
+			cameraX = 0;
+		}
+
+		if (cameraY < 0) {
+			cameraY = 0;
+		}
+
+		if (cameraX + WINDOW_WIDTH >= level.getLevelWidth()) {
+			cameraX = level.getLevelWidth() - WINDOW_WIDTH;
+		}
+
+		if (cameraY + WINDOW_HEIGHT >= level.getLevelHeight()) {
+			cameraY = level.getLevelHeight() - WINDOW_HEIGHT;
+		}
+
+		SDL_Rect viewport = { cameraX, cameraY, WINDOW_WIDTH, WINDOW_HEIGHT };
 		SDL_Rect mapPosition = { 0, 0, level.getLevelWidth(), level.getLevelHeight() };
+
+		renderer->setRendererSize(level.getLevelWidth(), level.getLevelHeight());
 
 		bool updateViewportX = false;
 		bool updateViewportY = false;
@@ -37,11 +68,6 @@ namespace game {
 		}
 
 		SDL_Texture* levelTileSetTexture = renderer->createTexture("assets/maps/" + level.getTileSetImagePath());
-		SDL_Texture* levelLayer1 = renderer->createTextureLayer(level.getLevelWidth(), level.getLevelHeight());
-		SDL_Texture* levelLayer2 = renderer->createTextureLayer(level.getLevelWidth(), level.getLevelHeight());
-		
-		StaticSprite levelSprite1(levelLayer1, 0, 0, level.getLevelWidth(), level.getLevelHeight());
-		StaticSprite levelSprite2(levelLayer2, 0, 0, level.getLevelWidth(), level.getLevelHeight());
 		
 		AnimationsManager animationsManager("assets/sprites/ash_256x256.json");
 
@@ -55,26 +81,12 @@ namespace game {
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level.getTilesLayer2();
 
 		StaticSprite layerSprite1(levelTileSetTexture, 0, 0, level.getTileSetImageWidth(), level.getTileSetImageHeight());
-		renderer->setLayerTarget(levelLayer1);
-		renderer->clear();
-		for (auto const& tile : layer1) {
-			layerSprite1.setSrcRect(tile.first);
-			layerSprite1.setDestRect(tile.second);
-			renderer->draw(&layerSprite1);
-		}
-		renderer->setLayerTarget(NULL);
-
 		StaticSprite layerSprite2(levelTileSetTexture, 0, 0, level.getTileSetImageWidth(), level.getTileSetImageHeight());
-		renderer->setLayerTarget(levelLayer2);
-		renderer->clear();
-		for (auto const& tile : layer2) {
-			layerSprite2.setSrcRect(tile.first);
-			layerSprite2.setDestRect(tile.second);
-			renderer->draw(&layerSprite2);
-		}
-		renderer->setLayerTarget(NULL);
 
-		audioManager.play("pokemon", MUSIC);
+		if (PLAY_AUDIO)
+		{
+			audioManager.play("pokemon", MUSIC);
+		}
 
 		FPS* fps = renderer->fpsCounter();
 		while (!window.isClosed())
@@ -83,31 +95,35 @@ namespace game {
 			renderer->clear();
 			command->execute(player);
 
-			SDL_Rect levelRect1 = levelSprite1.getDestRect();
-			SDL_Rect levelRect2 = levelSprite1.getDestRect();
-
-			if (updateViewportX)
-			{
-				levelRect1.x = viewport.x;
-				levelRect2.x = viewport.x;
+			for (auto const& tile : layer1) {
+				if (tile.second.x + tile.second.w * 2 >= viewport.x + tile.second.w &&
+					tile.second.y + tile.second.h * 2 >= viewport.y + tile.second.h &&
+					tile.second.x <= viewport.x + viewport.w &&
+					tile.second.y <= viewport.y + viewport.h) {
+					layerSprite1.setSrcRect(tile.first);
+					layerSprite1.setDestRect(tile.second);
+					renderer->draw(&layerSprite1);
+				}
 			}
 
-			if (updateViewportY)
-			{
-				levelRect1.y = viewport.y;
-				levelRect2.y = viewport.y;
-			}
-
-			levelSprite1.setDestRect(levelRect1);
-			levelSprite2.setDestRect(levelRect2);
-
-			renderer->draw(&levelSprite1);
 			renderer->draw(player.getSprite());
-			renderer->draw(&levelSprite2);
+
+			for (auto const& tile : layer2) {
+				if (tile.second.x + tile.second.w * 2 >= viewport.x + tile.second.w &&
+					tile.second.y + tile.second.h * 2 >= viewport.y + tile.second.h &&
+					tile.second.x <= viewport.x + viewport.w &&
+					tile.second.y <= viewport.y + viewport.h) {
+					layerSprite2.setSrcRect(tile.first);
+					layerSprite2.setDestRect(tile.second);
+					renderer->draw(&layerSprite2);
+				}
+			}
+
+			renderer->setRendererPosition(viewport.x, viewport.y);
 
 			if (SHOW_COLLISIONS)
 			{
-				renderer->showCollisions(collisions, viewport);
+				renderer->showCollisions(collisions);
 			}
 
 			if (SHOW_FPS)

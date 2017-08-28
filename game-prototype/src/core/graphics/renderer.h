@@ -15,20 +15,32 @@ namespace core { namespace graphics {
 	class Renderer {
 	private:
 		SDL_Renderer* m_Renderer;
+		SDL_Texture* m_TargetTexture;
+		SDL_Texture* m_FixedLayer;
 		std::map<std::string, SDL_Texture*> m_SpriteSheets;
+		int m_TargetPosX;
+		int m_TargetPosY;
+		unsigned int m_TargetWidth;
+		unsigned int m_TargetHeight;
+		unsigned int m_WindowWidth;
+		unsigned int m_WindowHeight;
 
 	public:
-		Renderer(SDL_Window* SDLWindow);
+		Renderer(SDL_Window* SDLWindow, unsigned int winWidth, unsigned int winHeight);
 		~Renderer();
 		void clear();
 		void draw(Sprite* sprite);
 		void render();
+		void setRendererPosition(int x, int y);
+		void setRendererSize(unsigned int width, unsigned int height);
 		SDL_Texture* createTexture(const std::string &filePath);
-		SDL_Texture* createTextureLayer(const int width, const int height);
-		void setLayerTarget(SDL_Texture* textureLayer);
+		void showCollisions(std::vector<SDL_Rect> collisions);
 		FPS* fpsCounter();
-		void setViewport(SDL_Rect* viewport);
-		void showCollisions(std::vector<SDL_Rect> collisions, SDL_Rect& viewport);
+
+	private:
+		void createFixedLayer();
+		void createRendererTarget();
+		SDL_Texture* createTransparentTargetTexture(unsigned int width, unsigned int height);
 	};
 
 } }

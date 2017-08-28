@@ -95,7 +95,7 @@ namespace game {
 		}
 
 		for (std::vector<SDL_Rect>::iterator collision = m_Collisions->begin(); collision != m_Collisions->end(); ++collision) {
-			SDL_Rect collisionBox = { collision->x + m_Viewport->x + PLAYER_SPEED, collision->y + m_Viewport->y + PLAYER_SPEED, collision->w, collision->h };
+			SDL_Rect collisionBox = { collision->x + PLAYER_SPEED, collision->y + PLAYER_SPEED, collision->w, collision->h };
 
 			if (playerBox.x <= collisionBox.x + collisionBox.w &&
 				playerBox.x + playerBox.w >= collisionBox.x &&
@@ -121,12 +121,13 @@ namespace game {
 		{
 			SDL_Rect player = m_AnimatedSprite->getDestRect();
 			if (m_NeedUpdateViewportY) {
-				if (m_Viewport->y == 0 || (player.y + player.h / 2) >= m_Viewport->h / 2)
+				if (m_Viewport->y <= 0 || (player.y + player.h / 2) >= m_Viewport->y + m_Viewport->h / 2)
 				{
 					player.y -= PLAYER_SPEED;
 				}
 				else {
-					m_Viewport->y += PLAYER_SPEED;
+					player.y -= PLAYER_SPEED;
+					m_Viewport->y -= PLAYER_SPEED;
 				}
 			}
 			else {
@@ -143,12 +144,13 @@ namespace game {
 			SDL_Rect player = m_AnimatedSprite->getDestRect();
 			if (m_NeedUpdateViewportY)
 			{
-				if ((player.y + player.h / 2 <= m_Viewport->h / 2) || (m_Viewport->y*-1 + PLAYER_SPEED >= m_MapSize->h - m_Viewport->h))
+				if ((player.y + player.h / 2 <= m_Viewport->h / 2) || (m_Viewport->y + PLAYER_SPEED >= m_MapSize->h - m_Viewport->h))
 				{
 					player.y += PLAYER_SPEED;
 				}
 				else {
-					m_Viewport->y -= PLAYER_SPEED;
+					player.y += PLAYER_SPEED;
+					m_Viewport->y += PLAYER_SPEED;
 				}
 			}
 			else {
@@ -165,12 +167,13 @@ namespace game {
 			SDL_Rect player = m_AnimatedSprite->getDestRect();
 			if (m_NeedUpdateViewportX)
 			{
-				if (m_Viewport->x == 0 || (player.x + player.w / 2) >= m_Viewport->w / 2)
+				if (m_Viewport->x <= 0 || (player.x + player.w / 2) >= m_Viewport->x + m_Viewport->w / 2)
 				{
 					player.x -= PLAYER_SPEED;
 				}
 				else {
-					m_Viewport->x += PLAYER_SPEED;
+					player.x -= PLAYER_SPEED;
+					m_Viewport->x -= PLAYER_SPEED;
 				}
 			}
 			else
@@ -188,12 +191,13 @@ namespace game {
 			SDL_Rect player = m_AnimatedSprite->getDestRect();
 			if (m_NeedUpdateViewportX)
 			{
-				if ((player.x + player.w / 2 <= m_Viewport->w / 2) || (m_Viewport->x*-1 >= m_MapSize->w - m_Viewport->w))
+				if ((player.x + player.w / 2 <= m_Viewport->x + m_Viewport->w / 2) || (m_Viewport->x >= m_MapSize->w - m_Viewport->w))
 				{
 					player.x += PLAYER_SPEED;
 				}
 				else {
-					m_Viewport->x -= PLAYER_SPEED;
+					player.x += PLAYER_SPEED;
+					m_Viewport->x += PLAYER_SPEED;
 				}
 			}
 			else {

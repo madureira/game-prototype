@@ -2,9 +2,10 @@
 
 namespace core { namespace graphics {
 
-	FPS::FPS(SDL_Renderer* renderer)
+	FPS::FPS(SDL_Renderer* renderer, SDL_Texture* targetTexture)
 	{
 		m_Renderer = renderer;
+		m_TargetTexture = targetTexture;
 		m_FPS = 0;
 
 		memset(m_Frametimes, 0, sizeof(m_Frametimes));
@@ -13,8 +14,6 @@ namespace core { namespace graphics {
 		m_Font = TTF_OpenFont("assets/fonts/Roboto-Regular.ttf", 26);
 		m_TextColor = { 76, 153, 0, 0 };
 		m_BackgroundColor = { 0, 0, 0 };
-
-
 	}
 
 	FPS::~FPS()
@@ -62,6 +61,7 @@ namespace core { namespace graphics {
 		SDL_FreeSurface(m_TextSurface);
 		m_RenderQuad = { 0, 0, text_width, text_height };
 
+		SDL_SetRenderTarget(m_Renderer, m_TargetTexture);
 		SDL_RenderCopy(m_Renderer, m_Text, &m_RenderQuad, &m_RenderQuad);
 		SDL_DestroyTexture(m_Text);
 	}

@@ -11082,7 +11082,7 @@
   <object id="65" x="930.75" y="247" width="120.75" height="40.5"/>
  </objectgroup>
  <objectgroup name="player">
-  <object id="20" name="Player" x="140.47" y="117.288" width="26" height="23">
+  <object id="20" name="Player" x="158.47" y="153.288" width="26" height="23">
    <ellipse/>
   </object>
  </objectgroup>

@@ -27,7 +27,7 @@ namespace core { namespace graphics {
 
 	Renderer* Window::createRenderer() const
 	{
-		return new Renderer(m_Window);
+		return new Renderer(m_Window, m_Width, m_Height);
 	}
 
 	bool Window::isClosed()
