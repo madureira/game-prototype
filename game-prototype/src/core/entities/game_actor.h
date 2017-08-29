@@ -15,6 +15,11 @@ namespace core { namespace entities {
 		virtual void upRight() = 0;
 		virtual void downLeft() = 0;
 		virtual void downRight() = 0;
+		virtual bool isMovingUp() = 0;
+		virtual bool isMovingDown() = 0;
+		virtual bool isMovingLeft() = 0;
+		virtual bool isMovingRight() = 0;
+		virtual int getSpeed() = 0;
 	};
 
 } }

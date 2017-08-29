@@ -9,6 +9,7 @@ namespace core { namespace tmx {
 		m_Y = objectElem->IntAttribute("y");
 		m_Width = objectElem->IntAttribute("width");
 		m_Height = objectElem->IntAttribute("height");
+		m_Velocity = objectElem->IntAttribute("velocity");
 
 		if (!m_Width && !m_Height)
 		{
@@ -18,6 +19,8 @@ namespace core { namespace tmx {
 				m_Polyline = TmxPolyline(pPolyline, m_X, m_Y);
 			}
 		}
+
+		m_Properties = TmxProperties(objectElem->FirstChildElement("properties"));
 	}
 
 	TmxObject::~TmxObject()

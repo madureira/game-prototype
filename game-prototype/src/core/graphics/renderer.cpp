@@ -2,8 +2,9 @@
 
 namespace core { namespace graphics {
 
-	Renderer::Renderer(SDL_Window* window, unsigned int winWidth, unsigned int winHeight)
+	Renderer::Renderer(SDL_Window* window, unsigned int winWidth, unsigned int winHeight, bool debugMode)
 	{
+		this->m_DebugMode = debugMode;
 		Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC;
 
 		this->m_Renderer = SDL_CreateRenderer(window, -1, flags);
@@ -26,6 +27,7 @@ namespace core { namespace graphics {
 		
 		this->createRendererTarget();
 		this->createFixedLayer();
+		this->initFPSCounter();
 	}
 
 	Renderer::~Renderer()
@@ -39,6 +41,14 @@ namespace core { namespace graphics {
 	{
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderClear(this->m_Renderer);
+
+		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+		SDL_RenderClear(this->m_Renderer);
+
+		if (this->m_DebugMode)
+		{
+			this->m_FPS->show();
+		}
 	}
 
 	void Renderer::draw(entities::Sprite* sprite)
@@ -52,16 +62,26 @@ namespace core { namespace graphics {
 		SDL_Rect source = { this->m_TargetPosX, this->m_TargetPosY, this->m_WindowWidth, this->m_WindowHeight };
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
 
+		if (source.x > 0)
+		{
+			source.x -= 1;
+		}
+
+		if (source.y > 0)
+		{
+			source.y -= 1;
+		}
+
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);
 		SDL_RenderCopy(this->m_Renderer, this->m_FixedLayer, &winRect, &winRect);
 		SDL_RenderPresent(this->m_Renderer);
 	}
 
-	void Renderer::setRendererPosition(int x, int y)
+	void Renderer::setRendererPosition(glm::vec2 position)
 	{
-		this->m_TargetPosX = x;
-		this->m_TargetPosY = y;
+		this->m_TargetPosX = position.x;
+		this->m_TargetPosY = position.y;
 	}
 
 	void Renderer::setRendererSize(unsigned int width, unsigned int height)
@@ -88,19 +108,22 @@ namespace core { namespace graphics {
 
 	void Renderer::showCollisions(std::vector<SDL_Rect> collisions)
 	{
-		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
-		SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
-		SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
-		for (std::vector<SDL_Rect>::iterator collision = collisions.begin(); collision != collisions.end(); ++collision) {
-			SDL_Rect collisionRect = { collision->x, collision->y, collision->w, collision->h };
-			SDL_RenderFillRect(this->m_Renderer, &collisionRect);
+		if (this->m_DebugMode)
+		{
+			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
+			SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
+			for (std::vector<SDL_Rect>::iterator collision = collisions.begin(); collision != collisions.end(); ++collision) {
+				SDL_Rect collisionRect = { collision->x, collision->y, collision->w, collision->h };
+				SDL_RenderFillRect(this->m_Renderer, &collisionRect);
+			}
+			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
 		}
-		SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
 	}
 
-	FPS* Renderer::fpsCounter()
+	void Renderer::initFPSCounter()
 	{
-		return new FPS(this->m_Renderer, this->m_FixedLayer);
+		this->m_FPS = new FPS(this->m_Renderer, this->m_FixedLayer);
 	}
 
 	void Renderer::createFixedLayer()

@@ -1,0 +1,10 @@
+{
+    "effects": [
+      {
+        "animation": "walk_down",
+        "sound": "step",
+        "duration": 0.0,
+        "loop": true
+      }
+    ]
+}

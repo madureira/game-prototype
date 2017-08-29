@@ -24,10 +24,13 @@ namespace core { namespace tmx {
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> m_TilesLayer2;
 		std::vector<SDL_Rect> m_Collisions;
 		std::vector<glm::vec2> m_Slopes;
-		SDL_Rect m_PlayerPosition;
+		SDL_Rect m_Camera;
+		glm::vec2 m_PlayerPosition;
+		unsigned int m_CameraSpeed;
+		unsigned int m_PlayerSpeed;
 
 	public:
-		Level(TmxMap* tmxMap);
+		Level(TmxMap* tmxMap, unsigned int winWidth, unsigned int winHeight);
 		~Level();
 
 		std::string getTileSetName() const { return m_TileSetName; }
@@ -42,9 +45,12 @@ namespace core { namespace tmx {
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> getTilesLayer2() const { return m_TilesLayer2; }
 		std::vector<SDL_Rect> getCollisions() const { return m_Collisions; }
 		std::vector<glm::vec2> getSlopes() const { return m_Slopes; };
-		SDL_Rect getPlayerPosition() const { return m_PlayerPosition; }
+		glm::vec2 getPlayerPosition() const { return m_PlayerPosition; }
 		int getLevelWidth() const { return m_LevelWidth; }
 		int getLevelHeight() const { return m_LevelHeight; }
+		SDL_Rect getCamera() const { return m_Camera; };
+		unsigned int getCameraSpeed() const { return m_CameraSpeed; }
+		unsigned int getPlayerSpeed() const { return m_PlayerSpeed; }
 	};
 
 } }

@@ -5,131 +5,90 @@ namespace game {
 	Game::Game()
 	{
 #ifdef DEBUG
-		static const bool FULLSCREEN = false;
-		static const bool SHOW_FPS = true;
-		static const bool SHOW_COLLISIONS = true;
-		static const bool PLAY_AUDIO = false;
+		static const bool DEBUG_MODE = true;
+		static const bool FULL_SCREEN = false;
 #else
-		static const bool FULLSCREEN = true;
-		static const bool SHOW_FPS = false;
-		static const bool SHOW_COLLISIONS = false;
-		static const bool PLAY_AUDIO = true;
+		static const bool DEBUG_MODE = false;
+		static const bool FULL_SCREEN = true;
 #endif
-
 		static const int WINDOW_WIDTH = 1280;
 		static const int WINDOW_HEIGHT = 720;
 
-		Window window("Game", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN);
+		Window window("Game", WINDOW_WIDTH, WINDOW_HEIGHT, FULL_SCREEN, DEBUG_MODE);
 		Renderer* renderer = window.createRenderer();
 		Input input(&window);
 
-		MapLoader mapLoader;
-		Level level = mapLoader.parse("assets/maps/map.tmx");
-
 		AudioManager audioManager;
 		audioManager.load("pokemon", "assets/sounds/Pokemon_Opening.wav", MUSIC);
-		SDL_Rect playerPos = level.getPlayerPosition();
+		audioManager.load("level_finish", "assets/sounds/finish_effect.wav", EFFECT);
+		audioManager.load("step", "assets/sounds/step.wav", EFFECT);
 
-		int cameraX = playerPos.x - WINDOW_WIDTH / 2;
-		int cameraY = playerPos.y - WINDOW_HEIGHT / 2;
+		AnimationsManager animationsManager;
+		animationsManager.load("player", "assets/sprites/ash_256x256.json");
 
-		if (cameraX < 0) {
-			cameraX = 0;
-		}
+		MapManager mapManager(WINDOW_WIDTH, WINDOW_HEIGHT);
+		mapManager.load("level_1", "assets/maps/map.tmx");
 
-		if (cameraY < 0) {
-			cameraY = 0;
-		}
+		Level* level = mapManager.getLevel("level_1");
+		renderer->setRendererSize(level->getLevelWidth(), level->getLevelHeight());
 
-		if (cameraX + WINDOW_WIDTH >= level.getLevelWidth()) {
-			cameraX = level.getLevelWidth() - WINDOW_WIDTH;
-		}
+		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
 
-		if (cameraY + WINDOW_HEIGHT >= level.getLevelHeight()) {
-			cameraY = level.getLevelHeight() - WINDOW_HEIGHT;
-		}
+		std::vector<SDL_Rect> collisions = level->getCollisions();
+		std::vector<glm::vec2> slopes = level->getSlopes();
 
-		SDL_Rect viewport = { cameraX, cameraY, WINDOW_WIDTH, WINDOW_HEIGHT };
-		SDL_Rect mapPosition = { 0, 0, level.getLevelWidth(), level.getLevelHeight() };
+		std::string playerSpritePath = "assets/sprites/" + animationsManager.getSpriteNameTo("player");
+		Player player(renderer->createTexture(playerSpritePath), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
 
-		renderer->setRendererSize(level.getLevelWidth(), level.getLevelHeight());
+		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer1 = level->getTilesLayer1();
+		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level->getTilesLayer2();
+		StaticSprite levelSprite(renderer->createTexture("assets/maps/" + level->getTileSetImagePath()), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 
-		bool updateViewportX = false;
-		bool updateViewportY = false;
-
-		if (mapPosition.w > viewport.w)
-		{
-			updateViewportX = true;
-		}
+		audioManager.play("pokemon", MUSIC, 10, -1);
 		
-		if (mapPosition.h > viewport.h)
-		{
-			updateViewportY = true;
-		}
-
-		SDL_Texture* levelTileSetTexture = renderer->createTexture("assets/maps/" + level.getTileSetImagePath());
-		
-		AnimationsManager animationsManager("assets/sprites/ash_256x256.json");
-
-		std::vector<SDL_Rect> collisions = level.getCollisions();
-		std::vector<glm::vec2> slopes = level.getSlopes();
-
-		Player player(renderer->createTexture("assets/sprites/" + animationsManager.getSpriteName()), level.getPlayerPosition().x, level.getPlayerPosition().y, animationsManager.getAnimations(), &collisions, &slopes, &mapPosition, &viewport);
-		player.setViewport(updateViewportX, updateViewportY);
-
-		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer1 = level.getTilesLayer1();
-		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level.getTilesLayer2();
-
-		StaticSprite layerSprite1(levelTileSetTexture, 0, 0, level.getTileSetImageWidth(), level.getTileSetImageHeight());
-		StaticSprite layerSprite2(levelTileSetTexture, 0, 0, level.getTileSetImageWidth(), level.getTileSetImageHeight());
-
-		if (PLAY_AUDIO)
-		{
-			audioManager.play("pokemon", MUSIC);
-		}
-
-		FPS* fps = renderer->fpsCounter();
+		int playingStep = false;
 		while (!window.isClosed())
 		{
-			Command* command = input.handle();
 			renderer->clear();
+
+			Command* command = input.handle();
 			command->execute(player);
 
 			for (auto const& tile : layer1) {
-				if (tile.second.x + tile.second.w * 2 >= viewport.x + tile.second.w &&
-					tile.second.y + tile.second.h * 2 >= viewport.y + tile.second.h &&
-					tile.second.x <= viewport.x + viewport.w &&
-					tile.second.y <= viewport.y + viewport.h) {
-					layerSprite1.setSrcRect(tile.first);
-					layerSprite1.setDestRect(tile.second);
-					renderer->draw(&layerSprite1);
+				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer1
+					levelSprite.setSrcRect(tile.first);
+					levelSprite.setDestRect(tile.second);
+					renderer->draw(&levelSprite);
 				}
 			}
 
 			renderer->draw(player.getSprite());
 
 			for (auto const& tile : layer2) {
-				if (tile.second.x + tile.second.w * 2 >= viewport.x + tile.second.w &&
-					tile.second.y + tile.second.h * 2 >= viewport.y + tile.second.h &&
-					tile.second.x <= viewport.x + viewport.w &&
-					tile.second.y <= viewport.y + viewport.h) {
-					layerSprite2.setSrcRect(tile.first);
-					layerSprite2.setDestRect(tile.second);
-					renderer->draw(&layerSprite2);
+				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer2
+					levelSprite.setSrcRect(tile.first);
+					levelSprite.setDestRect(tile.second);
+					renderer->draw(&levelSprite);
 				}
 			}
 
-			renderer->setRendererPosition(viewport.x, viewport.y);
+			glm::vec2 playerDirection = player.getDirection();
 
-			if (SHOW_COLLISIONS)
+			if (playingStep && (playerDirection.x == 0 && playerDirection.y == 0))
 			{
-				renderer->showCollisions(collisions);
+				playingStep = false;
+				audioManager.stop("step", EFFECT);
+			}
+			else if (!playingStep && (playerDirection.x != 0 || playerDirection.y != 0)) {
+				playingStep = true;
+				audioManager.play("step", EFFECT, 50, -1);
 			}
 
-			if (SHOW_FPS)
-			{
-				fps->show();
-			}
+			// display collisions *only on debug mode
+			renderer->showCollisions(collisions);
+
+			// updates camera position
+			renderer->setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), playerDirection));
 
 			renderer->render();
 		}

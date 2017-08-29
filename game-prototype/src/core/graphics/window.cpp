@@ -2,12 +2,13 @@
 
 namespace core { namespace graphics {
 
-	Window::Window(const char* title, int width, int height, bool fullScreen)
+	Window::Window(const char* title, int width, int height, bool fullScreen, bool debugMode)
 	{
 		m_Title = title;
 		m_Width = width;
 		m_Height = height;
 		m_FullScreen = fullScreen;
+		m_DebugMode = debugMode;
 		m_Closed = true;
 		m_Resized = false;
 		if (init())
@@ -27,7 +28,7 @@ namespace core { namespace graphics {
 
 	Renderer* Window::createRenderer() const
 	{
-		return new Renderer(m_Window, m_Width, m_Height);
+		return new Renderer(m_Window, m_Width, m_Height, m_DebugMode);
 	}
 
 	bool Window::isClosed()

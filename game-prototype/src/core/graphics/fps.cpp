@@ -55,7 +55,7 @@ namespace core { namespace graphics {
 
 		m_TextSurface = TTF_RenderText_Shaded(m_Font, fpsText.c_str(), m_TextColor, m_BackgroundColor);
 		m_Text = SDL_CreateTextureFromSurface(m_Renderer, m_TextSurface);
-		
+
 		int text_width = m_TextSurface->w;
 		int text_height = m_TextSurface->h;
 		SDL_FreeSurface(m_TextSurface);
