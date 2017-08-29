@@ -11,6 +11,7 @@ namespace core { namespace graphics {
 		static const int FRAME_VALUES = 10;
 		float m_FPS;
 		SDL_Renderer* m_Renderer;
+		SDL_Texture* m_TargetTexture;
 		Uint32 m_Frametimes[FRAME_VALUES];
 		Uint32 m_Frametimelast;
 		Uint32 m_Framecount;
@@ -22,7 +23,7 @@ namespace core { namespace graphics {
 		SDL_Rect m_RenderQuad;
 
 	public:
-		FPS(SDL_Renderer* renderer);
+		FPS(SDL_Renderer* renderer, SDL_Texture* targetTexture);
 		~FPS();
 		void show();
 	};

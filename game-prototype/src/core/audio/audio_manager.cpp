@@ -17,13 +17,13 @@ namespace core { namespace audio {
 			Mix_FreeMusic(music.second);
 		}
 
-		for (auto& chunk : m_Chunks)
+		for (auto& chunk : m_Effects)
 		{
 			Mix_FreeChunk(chunk.second);
 		}
 
 		m_Musics.clear();
-		m_Chunks.clear();
+		m_Effects.clear();
 		Mix_Quit();
 	}
 
@@ -38,10 +38,10 @@ namespace core { namespace audio {
 				return false;
 			}
 		}
-		else if (type == CHUNK)
+		else if (type == EFFECT)
 		{
-			m_Chunks[title] = Mix_LoadWAV(audioFile.c_str());
-			if (m_Chunks[title] == NULL)
+			m_Effects[title] = Mix_LoadWAV(audioFile.c_str());
+			if (m_Effects[title] == NULL)
 			{
 				printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 				return false;
@@ -51,15 +51,24 @@ namespace core { namespace audio {
 		return true;
 	}
 
-	void AudioManager::play(std::string title, SOUND_TYPE type)
+	void AudioManager::play(std::string title, SOUND_TYPE type, int volume, int loops)
 	{
+		if (volume >= 100) {
+			volume = MIX_MAX_VOLUME;
+		}
+		else if (volume < 0) {
+			volume = 0;
+		}
+
 		if (type == MUSIC)
 		{
-			Mix_PlayMusic(m_Musics[title], -1);
+			Mix_PlayMusic(m_Musics[title], loops);
+			Mix_VolumeMusic(volume);
 		}
-		else if (type == CHUNK)
+		else if (type == EFFECT)
 		{
-			Mix_PlayChannel(-1, m_Chunks[title], 0);
+			Mix_PlayChannel(-1, m_Effects[title], loops);
+			Mix_VolumeChunk(m_Effects[title], volume);
 		}
 	}
 
@@ -69,7 +78,7 @@ namespace core { namespace audio {
 		{
 			Mix_PauseMusic();
 		}
-		else if (type == CHUNK && Mix_Playing(-1))
+		else if (type == EFFECT && Mix_Playing(-1))
 		{
 			Mix_Pause(-1);
 		}
@@ -81,7 +90,7 @@ namespace core { namespace audio {
 		{
 			Mix_ResumeMusic();
 		}
-		else if (type == CHUNK)
+		else if (type == EFFECT)
 		{
 			Mix_Resume(-1);
 		}
@@ -93,7 +102,7 @@ namespace core { namespace audio {
 		{
 			Mix_HaltMusic();
 		}
-		else if (type == CHUNK)
+		else if (type == EFFECT)
 		{
 			Mix_HaltChannel(-1);
 		}

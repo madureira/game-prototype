@@ -15,11 +15,12 @@ namespace core { namespace graphics {
 		int m_Width;
 		int m_Height;
 		bool m_FullScreen;
+		bool m_DebugMode;
 		bool m_Closed;
 		bool m_Resized;
 
 	public:
-		Window(const char* title, int width, int height, bool fullScreen);
+		Window(const char* title, int width, int height, bool fullScreen, bool debugMode);
 		~Window();
 		Renderer* createRenderer() const;
 		bool isClosed();

@@ -6,10 +6,11 @@
 #include "../core/graphics/fps.h"
 #include "../core/entities/static_sprite.h"
 #include "../core/entities/animated_sprite.h"
+#include "../core/entities/camera.h"
 #include "../core/animations/animations_manager.h"
 #include "../core/audio/audio_manager.h"
 #include "../core/inputs/input.h"
-#include "../core/map/map_loader.h"
+#include "../core/map/map_manager.h"
 #include "../core/map/level.h"
 #include "player.h"
 

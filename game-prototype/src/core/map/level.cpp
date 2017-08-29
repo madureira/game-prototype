@@ -2,7 +2,7 @@
 
 namespace core { namespace tmx {
 
-	Level::Level(TmxMap* tmxMap)
+	Level::Level(TmxMap* tmxMap, unsigned int winWidth, unsigned int winHeight)
 	{
 		m_TileSetName = tmxMap->getTileset()->getName();
 		m_TileSetWidth = tmxMap->getTileset()->getTileWidth();
@@ -96,7 +96,43 @@ namespace core { namespace tmx {
 			}
 			else if (objectGroup->getName() == "player")
 			{
-				m_PlayerPosition = { objectGroup->getObjects()[0].getX(), objectGroup->getObjects()[0].getY(), 0, 0 };
+				TmxProperty playerProp = objectGroup->getObjects()[0].getProperties().getProperty("speed");
+
+				if (playerProp.type == "int")
+				{
+					this->m_PlayerSpeed = std::stoi(playerProp.value);
+				}
+
+				this->m_PlayerPosition = glm::vec2(objectGroup->getObjects()[0].getX(), objectGroup->getObjects()[0].getY());
+			}
+			else if (objectGroup->getName() == "camera")
+			{
+				int cameraX = objectGroup->getObjects()[0].getX() - winWidth / 2;
+				int cameraY = objectGroup->getObjects()[0].getY() - winHeight / 2;
+				TmxProperty cameraProp = objectGroup->getObjects()[0].getProperties().getProperty("speed");
+
+				if (cameraProp.type == "int")
+				{
+					this->m_CameraSpeed = std::stoi(cameraProp.value);
+				}
+
+				if (cameraX < 0) {
+					cameraX = 0;
+				}
+
+				if (cameraY < 0) {
+					cameraY = 0;
+				}
+
+				if (cameraX + winWidth >= this->getLevelWidth()) {
+					cameraX = this->getLevelWidth() - winWidth;
+				}
+
+				if (cameraY + winHeight >= this->getLevelHeight()) {
+					cameraY = this->getLevelHeight() - winHeight;
+				}
+
+				this->m_Camera = { cameraX, cameraY, (int) winWidth, (int) winHeight };
 			}
 		}
 		
