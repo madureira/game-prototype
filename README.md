@@ -1,6 +1,9 @@
 # game-prototype
 A simple 2D top-down game framework, built on top of SDL2 and modern C++11.
 
+[![GitHub version](https://badge.fury.io/gh/madureira%2Fgame-prototype.svg)](https://badge.fury.io/gh/madureira%2Fgame-prototype)
+[![GitHub release](https://img.shields.io/github/release/madureira/game-prototype.svg)]()
+
 Using this structure, you are able to build simple [2D top-down games](https://en.wikipedia.org/wiki/Video_game_graphics#Top-down_perspective), like some titles listed **[here](https://en.wikipedia.org/wiki/Category:Top-down_video_games)**.
 
 To facilitate game development, the framework integrates with some useful tools:
