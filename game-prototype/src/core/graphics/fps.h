@@ -11,15 +11,15 @@ namespace core { namespace graphics {
 		static const int FRAME_VALUES = 10;
 		float m_FPS;
 		SDL_Renderer* m_Renderer;
+		SDL_Surface* m_TextSurface;
 		SDL_Texture* m_TargetTexture;
+		SDL_Texture* m_Text;
+		TTF_Font* m_Font;
 		Uint32 m_Frametimes[FRAME_VALUES];
 		Uint32 m_Frametimelast;
 		Uint32 m_Framecount;
-		TTF_Font* m_Font;
 		SDL_Color m_TextColor;
 		SDL_Color m_BackgroundColor;
-		SDL_Surface* m_TextSurface;
-		SDL_Texture* m_Text;
 		SDL_Rect m_RenderQuad;
 
 	public:

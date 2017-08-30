@@ -27,10 +27,10 @@ namespace core { namespace animations {
 		Animation(std::string title, int spriteWidth, int spriteHeight, std::vector<Frame> frames);
 		~Animation();
 
-		std::string getTitle() const { return m_Title; }
-		std::vector<Frame> getFrames() const { return m_Frames; }
-		int getSpriteWidth() const { return m_SpriteWidth; }
-		int getSpriteHeight() const { return m_SpriteHeight; }
+		inline std::string getTitle() const { return m_Title; }
+		inline std::vector<Frame> getFrames() const { return m_Frames; }
+		inline int getSpriteWidth() const { return m_SpriteWidth; }
+		inline int getSpriteHeight() const { return m_SpriteHeight; }
 	};
 
 } }

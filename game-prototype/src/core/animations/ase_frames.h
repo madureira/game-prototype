@@ -18,9 +18,9 @@ namespace core { namespace ase {
 		AseFrames(json &frame);
 		~AseFrames();
 
-		SDL_Rect getFrame() const { return m_Frame; }
-		bool isRotated() const { return m_Rotated; }
-		int getDuration() const { return m_Duration; }
+		inline SDL_Rect getFrame() const { return m_Frame; }
+		inline bool isRotated() const { return m_Rotated; }
+		inline int getDuration() const { return m_Duration; }
 	};
 
 } }

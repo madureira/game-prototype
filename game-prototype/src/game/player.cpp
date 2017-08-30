@@ -4,81 +4,81 @@ namespace game {
 
 	Player::Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, std::vector<SDL_Rect>* collisions, std::vector<glm::vec2>* slopes)
 	{
-		m_AnimatedSprite = new AnimatedSprite(playerTexture, position.x, position.y, animations);
-		m_Collisions = collisions;
-		m_Slopes = slopes;
-		m_Speed = speed;
+		this->m_AnimatedSprite = new AnimatedSprite(playerTexture, position.x, position.y, animations);
+		this->m_Collisions = collisions;
+		this->m_Slopes = slopes;
+		this->m_Speed = speed;
 	}
 
 	Player::~Player()
 	{
-		
+		delete this->m_AnimatedSprite;
 	}
 
 	void Player::idle()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("idle");
+		this->resetMovement();
+		this->m_AnimatedSprite->play("idle");
 	}
 
 	void Player::up()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_up");
-		moveUp();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_up");
+		this->moveUp();
 	}
 
 	void Player::down()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_down");
-		moveDown();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_down");
+		this->moveDown();
 	}
 
 	void Player::left()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_left");
-		moveLeft();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_left");
+		this->moveLeft();
 	}
 
 	void Player::right()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_right");
-		moveRight();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_right");
+		this->moveRight();
 	}
 
 	void Player::upLeft()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_up");
-		moveUp();
-		moveLeft();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_up");
+		this->moveUp();
+		this->moveLeft();
 	}
 
 	void Player::upRight()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_up");
-		moveUp();
-		moveRight();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_up");
+		this->moveUp();
+		this->moveRight();
 	}
 
 	void Player::downLeft()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_down");
-		moveDown();
-		moveLeft();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_down");
+		this->moveDown();
+		this->moveLeft();
 	}
 
 	void Player::downRight()
 	{
-		resetMovement();
-		m_AnimatedSprite->play("walk_down");
-		moveDown();
-		moveRight();
+		this->resetMovement();
+		this->m_AnimatedSprite->play("walk_down");
+		this->moveDown();
+		this->moveRight();
 	}
 
 	glm::vec2 Player::getDirection()
@@ -111,7 +111,7 @@ namespace game {
 	{
 		bool blocked = false;
 
-		SDL_Rect player = m_AnimatedSprite->getDestRect();
+		SDL_Rect player = this->m_AnimatedSprite->getDestRect();
 		SDL_Rect playerBox = { player.x + 10, player.y + 30, player.w - 30, player.h - 40 };
 
 		if (command == "up") {
@@ -128,7 +128,7 @@ namespace game {
 			playerBox.x -= this->getSpeed();
 		}
 
-		for (std::vector<SDL_Rect>::iterator collision = m_Collisions->begin(); collision != m_Collisions->end(); ++collision) {
+		for (std::vector<SDL_Rect>::iterator collision = this->m_Collisions->begin(); collision != this->m_Collisions->end(); ++collision) {
 			SDL_Rect collisionBox = { collision->x + this->getSpeed(), collision->y + this->getSpeed(), collision->w, collision->h };
 
 			if (playerBox.x <= collisionBox.x + collisionBox.w &&
@@ -145,54 +145,54 @@ namespace game {
 
 	void Player::moveUp()
 	{
-		if (!isBlocked("up"))
+		if (!this->isBlocked("up"))
 		{
-			m_IsMovingUp = true;
-			SDL_Rect player = m_AnimatedSprite->getDestRect();
+			this->m_IsMovingUp = true;
+			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
 			player.y -= this->getSpeed();
-			m_AnimatedSprite->setDestRect(player);
+			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
 
 	void Player::moveDown()
 	{
-		if (!isBlocked("down"))
+		if (!this->isBlocked("down"))
 		{
-			m_IsMovingDown = true;
-			SDL_Rect player = m_AnimatedSprite->getDestRect();
+			this->m_IsMovingDown = true;
+			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
 			player.y += this->getSpeed();
-			m_AnimatedSprite->setDestRect(player);
+			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
 
 	void Player::moveLeft()
 	{
-		if (!isBlocked("left"))
+		if (!this->isBlocked("left"))
 		{
-			m_IsMovingLeft = true;
-			SDL_Rect player = m_AnimatedSprite->getDestRect();
+			this->m_IsMovingLeft = true;
+			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
 			player.x -= this->getSpeed();
-			m_AnimatedSprite->setDestRect(player);
+			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
 
 	void Player::moveRight()
 	{
-		if (!isBlocked("right"))
+		if (!this->isBlocked("right"))
 		{
-			m_IsMovingRight = true;
-			SDL_Rect player = m_AnimatedSprite->getDestRect();
+			this->m_IsMovingRight = true;
+			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
 			player.x += this->getSpeed();
-			m_AnimatedSprite->setDestRect(player);
+			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
 
 	void Player::resetMovement()
 	{
-		m_IsMovingUp = false;
-		m_IsMovingDown = false;
-		m_IsMovingRight = false;
-		m_IsMovingLeft = false;
+		this->m_IsMovingUp = false;
+		this->m_IsMovingDown = false;
+		this->m_IsMovingRight = false;
+		this->m_IsMovingLeft = false;
 	}
 
 }

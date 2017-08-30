@@ -33,6 +33,7 @@ namespace game {
 	public:
 		Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, std::vector<SDL_Rect>* collisions, std::vector<glm::vec2>* slopes);
 		~Player();
+
 		void idle();
 		void up();
 		void down();
@@ -43,6 +44,7 @@ namespace game {
 		void downLeft();
 		void downRight();
 		glm::vec2 getDirection();
+
 		inline AnimatedSprite* getSprite() { return m_AnimatedSprite; }
 		inline bool isMovingUp() { return m_IsMovingUp; }
 		inline bool isMovingDown() { return m_IsMovingDown; }

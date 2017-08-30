@@ -23,11 +23,12 @@ namespace core { namespace animations {
 
 	std::string AnimationsManager::getSpriteNameTo(std::string title) const
 	{
-		return m_SpriteNames.at(title);
+		return this->m_SpriteNames.at(title);
 	}
+
 	std::vector<Animation> AnimationsManager::getAnimationsTo(std::string title) const
 	{
-		return m_Animations.at(title);
+		return this->m_Animations.at(title);
 	}
 
 } }

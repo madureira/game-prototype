@@ -15,15 +15,15 @@ namespace core { namespace ase {
 			{
 				if (jStream.find("frames") != jStream.end())
 				{
-					parseFrames(jStream);
+					this->parseFrames(jStream);
 				}
 
 				if (jStream.find("meta") != jStream.end())
 				{
-					parseMeta(jStream);
+					this->parseMeta(jStream);
 				}
 
-				buildAnimations();
+				this->buildAnimations();
 			}
 		}
 		else
@@ -43,24 +43,24 @@ namespace core { namespace ase {
 	{
 		for (auto &frame : jStream.find("frames").value())
 		{
-			m_Frames.push_back(AseFrames(frame));
+			this->m_Frames.push_back(AseFrames(frame));
 		}
 	}
 
 	void AseParse::parseMeta(json &jStream)
 	{
-		m_Meta = AseMeta(jStream.find("meta").value());
-		m_SpriteName = m_Meta.getSpriteName();
+		this->m_Meta = AseMeta(jStream.find("meta").value());
+		this->m_SpriteName = this->m_Meta.getSpriteName();
 	}
 
 	void AseParse::buildAnimations()
 	{
-		for (auto& tag : m_Meta.getFrameTags())
+		for (auto& tag : this->m_Meta.getFrameTags())
 		{
 			std::vector<Frame> animationFrames;
 
 			int i = 0;
-			for (auto& frame : m_Frames)
+			for (auto& frame : this->m_Frames)
 			{
 				if (i >= tag.from && i <= tag.to)
 				{
@@ -68,7 +68,7 @@ namespace core { namespace ase {
 				}
 				i++;
 			}
-			m_Animations.push_back(Animation(tag.name, m_Meta.getWidth(), m_Meta.getHeight(), animationFrames));
+			this->m_Animations.push_back(Animation(tag.name, this->m_Meta.getWidth(), this->m_Meta.getHeight(), animationFrames));
 		}
 	}
 

@@ -5,10 +5,10 @@ namespace core { namespace entities {
 
 	AnimatedSprite::AnimatedSprite(SDL_Texture* texture, int destX, int destY, std::vector<Animation> animations)
 	{
-		m_Texture = texture;
-		m_WindowRect.x = destX;
-		m_WindowRect.y = destY;
-		m_Animations = animations;
+		this->m_Texture = texture;
+		this->m_WindowRect.x = destX;
+		this->m_WindowRect.y = destY;
+		this->m_Animations = animations;
 	}
 
 	AnimatedSprite::~AnimatedSprite()
@@ -18,42 +18,43 @@ namespace core { namespace entities {
 
 	void AnimatedSprite::play(std::string animationTitle)
 	{
-		for (auto& animation : m_Animations)
+		for (auto& animation : this->m_Animations)
 		{
-			if (animation.getTitle() == animationTitle)
+			if (animation.getTitle() != animationTitle)
 			{
-				if (m_LastAnimation != animationTitle)
+				continue;
+			}
+
+			if (this->m_LastAnimation != animationTitle)
+			{
+				this->m_LastAnimation = animationTitle;
+				this->m_FrameDelay = 100;
+				this->m_CurrentFrame = 0;
+				this->m_PreviousUpdateTime = 0;
+			}
+
+			int currentTime = SDL_GetTicks();
+
+			if (currentTime - this->m_PreviousUpdateTime > this->m_FrameDelay)
+			{
+				std::vector<Frame> frames = animation.getFrames();
+
+				if (this->m_CurrentFrame == frames.size())
 				{
-					m_LastAnimation = animationTitle;
-					m_FrameDelay = 100;
-					m_CurrentFrame = 0;
-					m_PreviousUpdateTime = 0;
+					this->m_CurrentFrame = 0;
 				}
 
-				int currentTime = SDL_GetTicks();
+				SDL_Rect textSrc = frames[this->m_CurrentFrame].frame;
+				this->setSrcRect(textSrc);
 
-				if (currentTime - m_PreviousUpdateTime > m_FrameDelay)
-				{
-					std::vector<Frame> frames = animation.getFrames();
+				SDL_Rect textDest = this->m_WindowRect;
+				textDest.w = textSrc.w;
+				textDest.h = textSrc.h;
+				this->setDestRect(textDest);
 
-					if (m_CurrentFrame == frames.size())
-					{
-						m_CurrentFrame = 0;
-					}
-
-					SDL_Rect textSrc = frames[m_CurrentFrame].frame;
-
-					setSrcRect(textSrc);
-
-					SDL_Rect textDest = m_WindowRect;
-					textDest.w = textSrc.w;
-					textDest.h = textSrc.h;
-					setDestRect(textDest);
-
-					m_FrameDelay = frames[m_CurrentFrame].duration;
-					m_CurrentFrame += 1;
-					m_PreviousUpdateTime = currentTime;
-				}
+				this->m_FrameDelay = frames[this->m_CurrentFrame].duration;
+				this->m_CurrentFrame += 1;
+				this->m_PreviousUpdateTime = currentTime;
 			}
 		}
 	}

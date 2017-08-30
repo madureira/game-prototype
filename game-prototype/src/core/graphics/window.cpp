@@ -4,49 +4,44 @@ namespace core { namespace graphics {
 
 	Window::Window(const char* title, int width, int height, bool fullScreen, bool debugMode)
 	{
-		m_Title = title;
-		m_Width = width;
-		m_Height = height;
-		m_FullScreen = fullScreen;
-		m_DebugMode = debugMode;
-		m_Closed = true;
-		m_Resized = false;
-		if (init())
+		this->m_Title = title;
+		this->m_Width = width;
+		this->m_Height = height;
+		this->m_FullScreen = fullScreen;
+		this->m_DebugMode = debugMode;
+		this->m_Closed = true;
+		this->m_Resized = false;
+
+		if (this->init())
 		{
-			m_Closed = false;
+			this->m_Closed = false;
 		}
 		else {
 			printf("Could not initalize SDL");
 		}
-
 	}
 
 	Window::~Window()
-	{
-		
-	}
-
-	Renderer* Window::createRenderer() const
-	{
-		return new Renderer(m_Window, m_Width, m_Height, m_DebugMode);
-	}
-
-	bool Window::isClosed()
-	{
-		return m_Closed;
-	}
-
-	void Window::close()
-	{
-		m_Closed = true;
-	}
-
-	void Window::destroy()
 	{
 		SDL_DestroyWindow(this->m_Window);
 		IMG_Quit();
 		TTF_Quit();
 		SDL_Quit();
+	}
+
+	Renderer Window::createRenderer() const
+	{
+		return Renderer(this->m_Window, this->m_Width, this->m_Height, this->m_DebugMode);
+	}
+
+	bool Window::isClosed()
+	{
+		return this->m_Closed;
+	}
+
+	void Window::close()
+	{
+		this->m_Closed = true;
 	}
 
 	bool Window::init()
@@ -57,15 +52,16 @@ namespace core { namespace graphics {
 			return false;
 		}
 
-		if (m_FullScreen) {
-			m_Window = SDL_CreateWindow(m_Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_FULLSCREEN);
+		Uint32 flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
+		if (this->m_FullScreen) {
+			flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_FULLSCREEN;
 			SDL_ShowCursor(SDL_DISABLE);
 		}
-		else {
-			m_Window = SDL_CreateWindow(m_Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-		}
 
-		if (m_Window == NULL)
+		this->m_Window = SDL_CreateWindow(this->m_Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->m_Width, this->m_Height, flags);
+
+		if (this->m_Window == NULL)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not create window: %s", SDL_GetError());
 			return false;

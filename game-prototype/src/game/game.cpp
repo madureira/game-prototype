@@ -15,7 +15,7 @@ namespace game {
 		static const int WINDOW_HEIGHT = 720;
 
 		Window window("Game", WINDOW_WIDTH, WINDOW_HEIGHT, FULL_SCREEN, DEBUG_MODE);
-		Renderer* renderer = window.createRenderer();
+		Renderer renderer = window.createRenderer();
 		Input input(&window);
 
 		AudioManager audioManager;
@@ -30,7 +30,7 @@ namespace game {
 		mapManager.load("level_1", "assets/maps/map.tmx");
 
 		Level* level = mapManager.getLevel("level_1");
-		renderer->setRendererSize(level->getLevelWidth(), level->getLevelHeight());
+		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
 
 		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
 
@@ -38,37 +38,39 @@ namespace game {
 		std::vector<glm::vec2> slopes = level->getSlopes();
 
 		std::string playerSpritePath = "assets/sprites/" + animationsManager.getSpriteNameTo("player");
-		Player player(renderer->createTexture(playerSpritePath), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
+		Player player(renderer.createTexture(playerSpritePath), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
 
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer1 = level->getTilesLayer1();
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level->getTilesLayer2();
-		StaticSprite levelSprite(renderer->createTexture("assets/maps/" + level->getTileSetImagePath()), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
+		StaticSprite levelSprite(renderer.createTexture("assets/maps/" + level->getTileSetImagePath()), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 
 		audioManager.play("pokemon", MUSIC, 10, -1);
 		
 		int playingStep = false;
+
+		Command* command = NULL;
 		while (!window.isClosed())
 		{
-			renderer->clear();
+			renderer.clear();
 
-			Command* command = input.handle();
+			command = input.handle();
 			command->execute(player);
 
 			for (auto const& tile : layer1) {
 				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer1
 					levelSprite.setSrcRect(tile.first);
 					levelSprite.setDestRect(tile.second);
-					renderer->draw(&levelSprite);
+					renderer.draw(&levelSprite);
 				}
 			}
 
-			renderer->draw(player.getSprite());
+			renderer.draw(player.getSprite());
 
 			for (auto const& tile : layer2) {
 				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer2
 					levelSprite.setSrcRect(tile.first);
 					levelSprite.setDestRect(tile.second);
-					renderer->draw(&levelSprite);
+					renderer.draw(&levelSprite);
 				}
 			}
 
@@ -81,17 +83,20 @@ namespace game {
 			}
 			else if (!playingStep && (playerDirection.x != 0 || playerDirection.y != 0)) {
 				playingStep = true;
-				audioManager.play("step", EFFECT, 50, -1);
+				audioManager.play("step", EFFECT, 100, -1);
 			}
 
 			// display collisions *only on debug mode
-			renderer->showCollisions(collisions);
+			renderer.showCollisions(collisions);
 
 			// updates camera position
-			renderer->setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), playerDirection));
+			renderer.setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), playerDirection));
 
-			renderer->render();
+			renderer.render();
 		}
+
+		delete command;
+		delete level;
 	}
 
 }

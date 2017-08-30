@@ -25,8 +25,8 @@ namespace core { namespace ase {
 	public:
 		AseParse(std::string jsonPath);
 		~AseParse();
-		std::vector<Animation> getAnimations() const { return m_Animations; }
-		std::string getSpriteName() const { return m_SpriteName; }
+		inline std::vector<Animation> getAnimations() const { return m_Animations; }
+		inline std::string getSpriteName() const { return m_SpriteName; }
 
 	private:
 		void parseFrames(json &jStream);

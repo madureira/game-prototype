@@ -22,16 +22,16 @@ namespace core { namespace graphics {
 	public:
 		Window(const char* title, int width, int height, bool fullScreen, bool debugMode);
 		~Window();
-		Renderer* createRenderer() const;
+		Renderer createRenderer() const;
 		bool isClosed();
 		void close();
-		void destroy();
-		int getWidth() { return m_Width; }
-		int getHeight() { return m_Height; }
-		void setWidth(int width) { m_Width = width; }
-		void setHeight(int height) { m_Height = height; }
-		void setResizing(bool value) { m_Resized = value; }
-		bool isResizing() { return m_Resized; }
+
+		inline int getWidth() { return m_Width; }
+		inline int getHeight() { return m_Height; }
+		inline void setWidth(int width) { m_Width = width; }
+		inline void setHeight(int height) { m_Height = height; }
+		inline void setResizing(bool value) { m_Resized = value; }
+		inline bool isResizing() { return m_Resized; }
 
 	private:
 		bool init();

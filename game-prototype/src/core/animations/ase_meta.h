@@ -28,21 +28,21 @@ namespace core { namespace ase {
 	{
 	private:
 		std::string m_SpriteName;
+		std::vector<FrameTag> m_FrameTags;
 		int m_SpriteWidth;
 		int m_SpriteHeight;
 		int m_Scale;
-		std::vector<FrameTag> m_FrameTags;
 
 	public:
 		AseMeta(json &meta);
 		AseMeta();
 		~AseMeta();
 
-		std::string getSpriteName() const { return m_SpriteName; }
-		int getWidth() const { return m_SpriteWidth; }
-		int getHeight() const { return m_SpriteHeight; }
-		int getScale() const { return m_Scale; }
-		std::vector<FrameTag> getFrameTags() const { return m_FrameTags; }
+		inline std::string getSpriteName() const { return m_SpriteName; }
+		inline std::vector<FrameTag> getFrameTags() const { return m_FrameTags; }
+		inline int getWidth() const { return m_SpriteWidth; }
+		inline int getHeight() const { return m_SpriteHeight; }
+		inline int getScale() const { return m_Scale; }
 	};
 
 } }

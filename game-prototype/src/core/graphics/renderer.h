@@ -18,8 +18,8 @@ namespace core { namespace graphics {
 		SDL_Renderer* m_Renderer;
 		SDL_Texture* m_TargetTexture;
 		SDL_Texture* m_FixedLayer;
-		std::map<std::string, SDL_Texture*> m_SpriteSheets;
 		FPS* m_FPS;
+		std::map<std::string, SDL_Texture*> m_SpriteSheets;
 		bool m_DebugMode;
 		int m_TargetPosX;
 		int m_TargetPosY;

@@ -12,17 +12,14 @@ namespace core { namespace entities {
 		this->m_LevelWidth = levelWidth;
 		this->m_LevelHeight = levelHeight;
 
-		bool updateViewportX = false;
-		bool updateViewportY = false;
-
 		if (this->m_LevelWidth > this->m_Width)
 		{
-			m_UpdateX = true;
+			this->m_UpdateX = true;
 		}
 
 		if (this->m_LevelHeight > this->m_Height)
 		{
-			m_UpdateY = true;
+			this->m_UpdateY = true;
 		}
 	}
 

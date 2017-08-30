@@ -4,13 +4,13 @@ namespace core { namespace entities {
 
 	StaticSprite::StaticSprite(SDL_Texture* texture, float destX, float destY, int width, int height)
 	{
-		m_Texture = texture;
-		m_WindowRect.x = destX;
-		m_WindowRect.y = destY;
-		m_WindowRect.w = width;
-		m_WindowRect.h = height;
+		this->m_Texture = texture;
+		this->m_WindowRect.x = destX;
+		this->m_WindowRect.y = destY;
+		this->m_WindowRect.w = width;
+		this->m_WindowRect.h = height;
 
-		SDL_QueryTexture(texture, NULL, NULL, &m_TextureRect.w, &m_TextureRect.h);
+		SDL_QueryTexture(texture, NULL, NULL, &this->m_TextureRect.w, &this->m_TextureRect.h);
 	}
 
 	StaticSprite::~StaticSprite()

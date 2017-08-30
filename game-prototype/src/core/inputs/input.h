@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../graphics/window.h"
-#include "joystick.h"
-#include "gamepad_layout.h"
 #include "command.h"
 #include "idle_command.h"
 #include "up_command.h"

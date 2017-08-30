@@ -5,6 +5,7 @@ namespace core { namespace graphics {
 	Renderer::Renderer(SDL_Window* window, unsigned int winWidth, unsigned int winHeight, bool debugMode)
 	{
 		this->m_DebugMode = debugMode;
+
 		Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC;
 
 		this->m_Renderer = SDL_CreateRenderer(window, -1, flags);
@@ -32,6 +33,13 @@ namespace core { namespace graphics {
 
 	Renderer::~Renderer()
 	{
+		for (std::map<std::string, SDL_Texture*>::iterator itr = m_SpriteSheets.begin(); itr != m_SpriteSheets.end(); itr++)
+		{
+			SDL_DestroyTexture(itr->second);
+		}
+		m_SpriteSheets.clear();
+
+		delete this->m_FPS;
 		SDL_DestroyTexture(this->m_TargetTexture);
 		SDL_DestroyTexture(this->m_FixedLayer);
 		SDL_DestroyRenderer(this->m_Renderer);
@@ -61,16 +69,6 @@ namespace core { namespace graphics {
 	{
 		SDL_Rect source = { this->m_TargetPosX, this->m_TargetPosY, this->m_WindowWidth, this->m_WindowHeight };
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
-
-		if (source.x > 0)
-		{
-			source.x -= 1;
-		}
-
-		if (source.y > 0)
-		{
-			source.y -= 1;
-		}
 
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);

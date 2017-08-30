@@ -6,6 +6,7 @@ namespace core { namespace entities {
 	{
 	public:
 		virtual ~GameActor() {}
+
 		virtual void idle() = 0;
 		virtual void up() = 0;
 		virtual void down() = 0;
