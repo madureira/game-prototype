@@ -19,17 +19,16 @@ namespace game {
 		Input input(&window);
 
 		AudioManager audioManager;
-		audioManager.load("pokemon", "assets/sounds/Pokemon_Opening.wav", MUSIC);
-		audioManager.load("level_finish", "assets/sounds/finish_effect.wav", EFFECT);
-		audioManager.load("step", "assets/sounds/step.wav", EFFECT);
+		audioManager.load("pokemon", "assets/sounds/musics/pokemon.wav", MUSIC);
+		audioManager.load("step", "assets/sounds/effects/steps.wav", EFFECT);
 
 		AnimationsManager animationsManager;
-		animationsManager.load("player", "assets/sprites/ash_256x256.json");
+		animationsManager.load("player", "assets/sprites/player/ash.json");
 
 		MapManager mapManager(WINDOW_WIDTH, WINDOW_HEIGHT);
-		mapManager.load("level_1", "assets/maps/map.tmx");
+		mapManager.load("level_01", "assets/maps/level_01/map.tmx");
 
-		Level* level = mapManager.getLevel("level_1");
+		Level* level = mapManager.getLevel("level_01");
 		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
 
 		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
@@ -37,12 +36,12 @@ namespace game {
 		std::vector<SDL_Rect> collisions = level->getCollisions();
 		std::vector<glm::vec2> slopes = level->getSlopes();
 
-		std::string playerSpritePath = "assets/sprites/" + animationsManager.getSpriteNameTo("player");
-		Player player(renderer.createTexture(playerSpritePath), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
+		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
 
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer1 = level->getTilesLayer1();
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level->getTilesLayer2();
-		StaticSprite levelSprite(renderer.createTexture("assets/maps/" + level->getTileSetImagePath()), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
+
+		StaticSprite levelSprite(renderer.createTexture("assets/maps/level_01/atlas.png"), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 
 		audioManager.play("pokemon", MUSIC, 10, -1);
 		

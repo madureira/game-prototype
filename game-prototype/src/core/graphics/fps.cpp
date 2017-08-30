@@ -11,7 +11,7 @@ namespace core { namespace graphics {
 		memset(this->m_Frametimes, 0, sizeof(this->m_Frametimes));
 		this->m_Framecount = 0;
 		this->m_Frametimelast = SDL_GetTicks();
-		this->m_Font = TTF_OpenFont("assets/fonts/Roboto-Regular.ttf", 26);
+		this->m_Font = TTF_OpenFont("assets/fonts/core/roboto-regular.ttf", 26);
 		this->m_TextColor = { 76, 153, 0, 0 };
 		this->m_BackgroundColor = { 0, 0, 0 };
 	}

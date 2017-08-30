@@ -79,7 +79,7 @@ namespace core { namespace graphics {
 			return false;
 		}
 
-		if (TTF_OpenFont("assets/fonts/Roboto-Regular.ttf", 90) == nullptr) {
+		if (TTF_OpenFont("assets/fonts/core/roboto-regular.ttf", 90) == nullptr) {
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load sketchy.ttf %s", SDL_GetError());
 			return false;
 		}
