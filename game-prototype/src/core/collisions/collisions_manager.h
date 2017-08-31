@@ -19,7 +19,7 @@ namespace core { namespace collisions {
 		CollisionsManager(std::vector<SDL_Rect> collisions, EventManager* eventManager);
 		~CollisionsManager();
 
-		virtual void onNotify(const Entity& entity, Event event, void* pValue);
+		virtual void onNotify(Event event, void* pValue);
 
 	private:
 		bool isColliding(SDL_Rect target);

@@ -2,7 +2,6 @@
 
 #include <string>
 #include <SDL2/SDL.h>
-#include "entity.h"
 
 namespace core { namespace entities {
 
@@ -13,7 +12,7 @@ namespace core { namespace entities {
 		INVACTIVE
 	};
 
-	class Trigger : public Entity
+	class Trigger
 	{
 	private:
 		std::string m_Name;

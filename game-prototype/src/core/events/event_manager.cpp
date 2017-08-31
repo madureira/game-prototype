@@ -26,11 +26,11 @@ namespace core { namespace events {
 		}
 	}
 
-	void EventManager::notify(const Entity& entity, Event event, void* pValue)
+	void EventManager::notify(Event event, void* pValue)
 	{
 		for (auto& observer : m_Observers)
 		{
-			observer->onNotify(entity, event, pValue);
+			observer->onNotify(event, pValue);
 		}
 	}
 

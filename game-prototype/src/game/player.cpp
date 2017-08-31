@@ -107,7 +107,7 @@ namespace game {
 		return glm::vec2(horizontal, vertical);
 	}
 
-	void Player::onNotify(const Entity& entity, Event event, void* pValue)
+	void Player::onNotify(Event event, void* pValue)
 	{
 		if (event == PLAYER_BLOCKED)
 		{
@@ -117,9 +117,13 @@ namespace game {
 		{
 			this->m_IsBlocked = false;
 		}
+		else if (event == PLAYER_TRIGGER_ON)
+		{
+			this->playSoundEffect("enter_door");
+		}
 	}
 
-	bool Player::isBlocked(std::string command)
+	bool Player::isBlocked()
 	{
 		return this->m_IsBlocked;
 	}
@@ -127,7 +131,7 @@ namespace game {
 	void Player::moveUp()
 	{
 		this->notifyDisplacement("up");
-		if (!this->isBlocked("up"))
+		if (!this->isBlocked())
 		{
 			this->m_IsMovingUp = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
@@ -139,7 +143,7 @@ namespace game {
 	void Player::moveDown()
 	{
 		this->notifyDisplacement("down");
-		if (!this->isBlocked("down"))
+		if (!this->isBlocked())
 		{
 			this->m_IsMovingDown = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
@@ -151,7 +155,7 @@ namespace game {
 	void Player::moveLeft()
 	{
 		this->notifyDisplacement("left");
-		if (!this->isBlocked("left"))
+		if (!this->isBlocked())
 		{
 			this->m_IsMovingLeft = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
@@ -163,7 +167,7 @@ namespace game {
 	void Player::moveRight()
 	{
 		this->notifyDisplacement("right");
-		if (!this->isBlocked("right"))
+		if (!this->isBlocked())
 		{
 			this->m_IsMovingRight = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
@@ -198,7 +202,13 @@ namespace game {
 			playerBox.x -= this->getSpeed();
 		}
 
-		this->m_EventManager->notify(*this, PLAYER_WALK, &playerBox);
+		this->m_EventManager->notify(PLAYER_WALK, &playerBox);
+		this->playSoundEffect("steps");
+	}
+
+	void Player::playSoundEffect(std::string soundEffect)
+	{
+		this->m_EventManager->notify(AUDIO_PLAY_EFFECT, &soundEffect);
 	}
 
 }

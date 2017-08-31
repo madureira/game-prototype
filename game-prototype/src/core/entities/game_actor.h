@@ -1,10 +1,8 @@
 #pragma once
 
-#include "entity.h"
-
 namespace core { namespace entities {
 
-	class GameActor : public Entity
+	class GameActor
 	{
 	public:
 		virtual ~GameActor() {}

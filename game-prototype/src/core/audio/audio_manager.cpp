@@ -40,19 +40,15 @@ namespace core { namespace audio {
 		Mix_Quit();
 	}
 
-	void AudioManager::onNotify(const Entity& entity, Event event, void* pValue)
+	void AudioManager::onNotify(Event event, void* pValue)
 	{
-		if (event == PLAYER_WALK)
+		if (event == AUDIO_PLAY_EFFECT)
 		{
-			this->play("steps", EFFECT, 100, 0);
-		}
-		else if (event == PLAYER_TRIGGER_ON)
-		{
-			std::string trigger = *static_cast<std::string*>(pValue);
-			
-			if (trigger == "enter_door")
+			std::string soundTitle = *static_cast<std::string*>(pValue);
+
+			if (!soundTitle.empty())
 			{
-				this->play(trigger, EFFECT, 100, 0);
+				this->play(soundTitle, EFFECT, 100, 0);
 			}
 		}
 	}

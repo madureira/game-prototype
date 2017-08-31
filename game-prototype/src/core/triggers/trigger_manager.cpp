@@ -13,7 +13,7 @@ namespace core { namespace triggers {
 
 	}
 
-	void TriggerManager::onNotify(const Entity& entity, Event event, void* pValue)
+	void TriggerManager::onNotify(Event event, void* pValue)
 	{
 		if (event == PLAYER_WALK)
 		{
@@ -25,8 +25,7 @@ namespace core { namespace triggers {
 
 				if (tEvent == ON_ENTER)
 				{
-					void *vp = static_cast<void*>(new std::string("enter_door"));
-					this->m_EventManager->notify(*trigger, PLAYER_TRIGGER_ON, vp);
+					this->m_EventManager->notify(PLAYER_TRIGGER_ON, &trigger->getName());
 					break;
 				}
 			}

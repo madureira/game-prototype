@@ -54,15 +54,16 @@ namespace game {
 		inline bool isMovingRight() { return m_IsMovingRight; }
 		inline int getSpeed() { return m_Speed; }
 
-		virtual void onNotify(const Entity& entity, Event event, void* pValue);
+		virtual void onNotify(Event event, void* pValue);
 
 	private:
-		bool isBlocked(std::string command);
+		bool isBlocked();
 		void moveUp();
 		void moveDown();
 		void moveLeft();
 		void moveRight();
 		void resetMovement();
 		void notifyDisplacement(std::string direction);
+		void playSoundEffect(std::string soundEffect);
 	};
 }

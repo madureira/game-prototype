@@ -17,7 +17,7 @@ namespace core { namespace events {
 
 		void addObserver(Observer* observer);
 		void removeObserver(Observer* observer);
-		void notify(const Entity& entity, Event event, void* pValue);
+		void notify(Event event, void* pValue);
 	};
 
 } }

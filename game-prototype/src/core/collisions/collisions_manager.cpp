@@ -13,12 +13,12 @@ namespace core { namespace collisions {
 
 	}
 
-	void CollisionsManager::onNotify(const Entity& entity, Event event, void* pValue)
+	void CollisionsManager::onNotify(Event event, void* pValue)
 	{
 		if (event == PLAYER_WALK)
 		{
 			Event blockEvent = (this->isColliding(*static_cast<SDL_Rect*>(pValue))) ? PLAYER_BLOCKED : PLAYER_NOT_BLOCKED;
-			this->m_EventManager->notify(entity, blockEvent, "");
+			this->m_EventManager->notify(blockEvent, new std::string("player_collides"));
 		}
 	}
 

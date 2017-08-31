@@ -8,7 +8,8 @@ namespace core { namespace events {
 		PLAYER_BLOCKED,
 		PLAYER_NOT_BLOCKED,
 		PLAYER_TRIGGER_ON,
-		PLAYER_TRIGGER_OFF
+		PLAYER_TRIGGER_OFF,
+		AUDIO_PLAY_EFFECT
 	};
 
 } }

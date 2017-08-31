@@ -8,6 +8,7 @@
 namespace core { namespace triggers {
 
 	using namespace events;
+	using namespace entities;
 
 	class TriggerManager : public Observer
 	{
@@ -19,7 +20,7 @@ namespace core { namespace triggers {
 		TriggerManager(std::vector<Trigger*> triggers, EventManager* eventManager);
 		~TriggerManager();
 
-		virtual void onNotify(const Entity& entity, Event event, void* pValue);
+		virtual void onNotify(Event event, void* pValue);
 	};
 
 } }
