@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <glm/vec4.hpp>
 #include "observer.h"
 
 namespace core { namespace events {
@@ -17,7 +18,10 @@ namespace core { namespace events {
 
 		void addObserver(Observer* observer);
 		void removeObserver(Observer* observer);
-		void notify(Event event, void* pValue);
+
+		void notify(Event event);
+		void notify(Event event, std::string data);
+		void notify(Event event, glm::vec4 data);
 	};
 
 } }

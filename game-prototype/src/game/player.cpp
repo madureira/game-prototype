@@ -17,41 +17,41 @@ namespace game {
 
 	void Player::idle()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("idle");
 	}
 
 	void Player::up()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_up");
 		this->moveUp();
 	}
 
 	void Player::down()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_down");
 		this->moveDown();
 	}
 
 	void Player::left()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_left");
 		this->moveLeft();
 	}
 
 	void Player::right()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_right");
 		this->moveRight();
 	}
 
 	void Player::upLeft()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_up");
 		this->moveUp();
 		this->moveLeft();
@@ -59,7 +59,7 @@ namespace game {
 
 	void Player::upRight()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_up");
 		this->moveUp();
 		this->moveRight();
@@ -67,7 +67,7 @@ namespace game {
 
 	void Player::downLeft()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_down");
 		this->moveDown();
 		this->moveLeft();
@@ -75,7 +75,7 @@ namespace game {
 
 	void Player::downRight()
 	{
-		this->resetMovement();
+		this->resetMovements();
 		this->m_AnimatedSprite->play("walk_down");
 		this->moveDown();
 		this->moveRight();
@@ -86,20 +86,20 @@ namespace game {
 		int vertical = 0;
 		int horizontal = 0;
 
-		if (this->isMovingUp())
+		if (this->m_IsMovingUp)
 		{
 			vertical = -1;
 		}
-		else if (this->isMovingDown())
+		else if (this->m_IsMovingDown)
 		{
 			vertical = 1;
 		}
 
-		if (this->isMovingLeft())
+		if (this->m_IsMovingLeft)
 		{
 			horizontal = -1;
 		}
-		else if (this->isMovingRight())
+		else if (this->m_IsMovingRight)
 		{
 			horizontal = 1;
 		}
@@ -107,7 +107,7 @@ namespace game {
 		return glm::vec2(horizontal, vertical);
 	}
 
-	void Player::onNotify(Event event, void* pValue)
+	void Player::onNotify(Event event)
 	{
 		if (event == PLAYER_BLOCKED)
 		{
@@ -117,25 +117,24 @@ namespace game {
 		{
 			this->m_IsBlocked = false;
 		}
-		else if (event == PLAYER_TRIGGER_ON)
+	}
+
+	void Player::onNotify(Event event, std::string data)
+	{
+		if (event == PLAYER_TRIGGER_ON)
 		{
 			this->playSoundEffect("enter_door");
 		}
 	}
 
-	bool Player::isBlocked()
-	{
-		return this->m_IsBlocked;
-	}
-
 	void Player::moveUp()
 	{
 		this->notifyDisplacement("up");
-		if (!this->isBlocked())
+		if (!this->m_IsBlocked)
 		{
 			this->m_IsMovingUp = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
-			player.y -= this->getSpeed();
+			player.y -= this->m_Speed;
 			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
@@ -143,11 +142,11 @@ namespace game {
 	void Player::moveDown()
 	{
 		this->notifyDisplacement("down");
-		if (!this->isBlocked())
+		if (!this->m_IsBlocked)
 		{
 			this->m_IsMovingDown = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
-			player.y += this->getSpeed();
+			player.y += this->m_Speed;
 			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
@@ -155,11 +154,11 @@ namespace game {
 	void Player::moveLeft()
 	{
 		this->notifyDisplacement("left");
-		if (!this->isBlocked())
+		if (!this->m_IsBlocked)
 		{
 			this->m_IsMovingLeft = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
-			player.x -= this->getSpeed();
+			player.x -= this->m_Speed;
 			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
@@ -167,16 +166,16 @@ namespace game {
 	void Player::moveRight()
 	{
 		this->notifyDisplacement("right");
-		if (!this->isBlocked())
+		if (!this->m_IsBlocked)
 		{
 			this->m_IsMovingRight = true;
 			SDL_Rect player = this->m_AnimatedSprite->getDestRect();
-			player.x += this->getSpeed();
+			player.x += this->m_Speed;
 			this->m_AnimatedSprite->setDestRect(player);
 		}
 	}
 
-	void Player::resetMovement()
+	void Player::resetMovements()
 	{
 		this->m_IsMovingUp = false;
 		this->m_IsMovingDown = false;
@@ -190,25 +189,26 @@ namespace game {
 		SDL_Rect playerBox = { player.x + 10, player.y + 25, player.w - 20, player.h - 25 };
 
 		if (direction == "up") {
-			playerBox.y -= this->getSpeed();
+			playerBox.y -= this->m_Speed;
 		}
 		else if (direction == "down") {
-			playerBox.y += this->getSpeed();
+			playerBox.y += this->m_Speed;
 		}
 		else if (direction == "right") {
-			playerBox.x += this->getSpeed();
+			playerBox.x += this->m_Speed;
 		}
 		else if (direction == "left") {
-			playerBox.x -= this->getSpeed();
+			playerBox.x -= this->m_Speed;
 		}
 
-		this->m_EventManager->notify(PLAYER_WALK, &playerBox);
+		glm::vec4 playerData = glm::vec4(playerBox.x, playerBox.y, playerBox.w, playerBox.h);
+		this->m_EventManager->notify(PLAYER_WALK, playerData);
 		this->playSoundEffect("steps");
 	}
 
 	void Player::playSoundEffect(std::string soundEffect)
 	{
-		this->m_EventManager->notify(AUDIO_PLAY_EFFECT, &soundEffect);
+		this->m_EventManager->notify(AUDIO_PLAY_EFFECT, soundEffect);
 	}
 
 }

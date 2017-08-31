@@ -31,13 +31,15 @@ namespace core { namespace audio {
 		AudioManager(EventManager* eventManager);
 		~AudioManager();
 
-		virtual void onNotify(Event event, void* pValue);
-
 		bool load(std::string title, std::string audioFile, SOUND_TYPE type);
 		void play(std::string title, SOUND_TYPE type, int volume, int loops);
 		void pause(std::string title, SOUND_TYPE type);
 		void resume(std::string title, SOUND_TYPE type);
 		void stop(std::string title, SOUND_TYPE type);
+
+		virtual void onNotify(Event event) override {}
+		virtual void onNotify(Event event, std::string data) override;
+		virtual void onNotify(Event event, glm::vec4 data) override {}
 	};
 
 } }

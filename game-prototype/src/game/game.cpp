@@ -24,24 +24,24 @@ namespace game {
 		Level* level = mapManager.getLevel("level_01");
 		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
 
-		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
+		AnimationsManager animationsManager;
+		animationsManager.load("player", "assets/sprites/player/ash.json");
 
 		EventManager eventManager;
+
+		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
+
+		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
+
+		CollisionsManager collisionsManager(level->getCollisions(), &eventManager);
+
+		TriggerManager triggerManager(level->getTriggers(), &eventManager);
 
 		AudioManager audioManager(&eventManager);
 		audioManager.load("pokemon", "assets/sounds/musics/pokemon.wav", MUSIC);
 		audioManager.load("steps", "assets/sounds/effects/steps.wav", EFFECT);
 		audioManager.load("enter_door", "assets/sounds/effects/enter_door.wav", EFFECT);
 		audioManager.play("pokemon", MUSIC, 10, -1);
-
-		AnimationsManager animationsManager;
-		animationsManager.load("player", "assets/sprites/player/ash.json");
-
-		TriggerManager triggerManager(level->getTriggers(), &eventManager);
-
-		CollisionsManager collisionsManager(level->getCollisions(), &eventManager);
-
-		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
 
 		StaticSprite levelSprite(renderer.createTexture("assets/maps/level_01/atlas.png"), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 

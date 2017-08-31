@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <glm/vec2.hpp>
 #include <SDL2/SDL.h>
+#include <glm/vec2.hpp>
 
 namespace core { namespace entities {
 
@@ -25,12 +25,6 @@ namespace core { namespace entities {
 
 		bool isVisible(SDL_Rect object);
 		glm::vec2 getPosition(SDL_Rect target, glm::vec2 direction);
-
-		inline int getX() const { return m_X; }
-		inline int getY() const { return m_Y; }
-		inline int getWidth() const { return m_Width; }
-		inline int getHeight() const { return m_Height; }
-		
 	};
 
 } }

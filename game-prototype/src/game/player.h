@@ -23,46 +23,40 @@ namespace game {
 	private:
 		AnimatedSprite* m_AnimatedSprite;
 		EventManager* m_EventManager;
-
-		int m_Frames;
+		int m_Speed;
 		bool m_IsBlocked;
 		bool m_IsMovingUp;
 		bool m_IsMovingDown;
 		bool m_IsMovingLeft;
 		bool m_IsMovingRight;
-		int m_Speed;
 
 	public:
 		Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, EventManager* eventManager);
 		~Player();
 
-		void idle();
-		void up();
-		void down();
-		void left();
-		void right();
-		void upLeft();
-		void upRight();
-		void downLeft();
-		void downRight();
 		glm::vec2 getDirection();
-
 		inline AnimatedSprite* getSprite() { return m_AnimatedSprite; }
-		inline bool isMovingUp() { return m_IsMovingUp; }
-		inline bool isMovingDown() { return m_IsMovingDown; }
-		inline bool isMovingLeft() { return m_IsMovingLeft; }
-		inline bool isMovingRight() { return m_IsMovingRight; }
-		inline int getSpeed() { return m_Speed; }
 
-		virtual void onNotify(Event event, void* pValue);
+		virtual void idle() override;
+		virtual void up() override;
+		virtual void down() override;
+		virtual void left() override;
+		virtual void right() override;
+		virtual void upLeft() override;
+		virtual void upRight() override;
+		virtual void downLeft() override;
+		virtual void downRight() override;
+
+		virtual void onNotify(Event event) override;
+		virtual void onNotify(Event event, std::string data) override;
+		virtual void onNotify(Event event, glm::vec4 data) override {};
 
 	private:
-		bool isBlocked();
 		void moveUp();
 		void moveDown();
 		void moveLeft();
 		void moveRight();
-		void resetMovement();
+		void resetMovements();
 		void notifyDisplacement(std::string direction);
 		void playSoundEffect(std::string soundEffect);
 	};

@@ -40,15 +40,13 @@ namespace core { namespace audio {
 		Mix_Quit();
 	}
 
-	void AudioManager::onNotify(Event event, void* pValue)
+	void AudioManager::onNotify(Event event, std::string data)
 	{
 		if (event == AUDIO_PLAY_EFFECT)
 		{
-			std::string soundTitle = *static_cast<std::string*>(pValue);
-
-			if (!soundTitle.empty())
+			if (!data.empty())
 			{
-				this->play(soundTitle, EFFECT, 100, 0);
+				this->play(data, EFFECT, 100, 0);
 			}
 		}
 	}

@@ -13,24 +13,24 @@ namespace core { namespace collisions {
 
 	}
 
-	void CollisionsManager::onNotify(Event event, void* pValue)
+	void CollisionsManager::onNotify(Event event, glm::vec4 data)
 	{
 		if (event == PLAYER_WALK)
 		{
-			Event blockEvent = (this->isColliding(*static_cast<SDL_Rect*>(pValue))) ? PLAYER_BLOCKED : PLAYER_NOT_BLOCKED;
-			this->m_EventManager->notify(blockEvent, new std::string("player_collides"));
+			this->m_EventManager->notify((this->isColliding(data)) ? PLAYER_BLOCKED : PLAYER_NOT_BLOCKED);
 		}
 	}
 
-	bool CollisionsManager::isColliding(SDL_Rect target)
+	bool CollisionsManager::isColliding(glm::vec4 target)
 	{
 		bool blocked = false;
 
 		for (auto& collision : this->m_Collisions) {
 			if (target.x <= collision.x + collision.w &&
-				target.x + target.w >= collision.x &&
 				target.y < collision.y + collision.h &&
-				target.h + target.y >= collision.y) {
+				target.x + target.z >= collision.x &&
+				target.y + target.w >= collision.y)
+			{
 				blocked = true;
 				break;
 			}

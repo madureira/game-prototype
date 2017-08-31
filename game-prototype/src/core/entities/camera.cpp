@@ -30,10 +30,10 @@ namespace core { namespace entities {
 
 	bool Camera::isVisible(SDL_Rect object)
 	{
-		return (object.x + object.w * 2 >= this->getX() + object.w &&
-				object.y + object.h * 2 >= this->getY() + object.h &&
-				object.x <= this->getX() + this->getWidth() &&
-				object.y <= this->getY() + this->getHeight());
+		return (object.x + object.w * 2 >= this->m_X + object.w &&
+				object.y + object.h * 2 >= this->m_Y + object.h &&
+				object.x <= this->m_X + this->m_Width &&
+				object.y <= this->m_Y + this->m_Height);
 	}
 
 	glm::vec2 Camera::getPosition(SDL_Rect target, glm::vec2 direction)

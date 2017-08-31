@@ -14,23 +14,39 @@ namespace core { namespace events {
 
 	void EventManager::addObserver(Observer* observer)
 	{
-		m_Observers.push_back(observer);
+		this->m_Observers.push_back(observer);
 	}
 
 	void EventManager::removeObserver(Observer* observer)
 	{
-		auto it = std::find(m_Observers.begin(), m_Observers.end(), observer);
-		if (it != m_Observers.end())
+		auto it = std::find(this->m_Observers.begin(), this->m_Observers.end(), observer);
+		if (it != this->m_Observers.end())
 		{
-			m_Observers.erase(it);
+			this->m_Observers.erase(it);
 		}
 	}
 
-	void EventManager::notify(Event event, void* pValue)
+	void EventManager::notify(Event event)
 	{
-		for (auto& observer : m_Observers)
+		for (auto& observer : this->m_Observers)
 		{
-			observer->onNotify(event, pValue);
+			observer->onNotify(event);
+		}
+	}
+
+	void EventManager::notify(Event event, std::string data)
+	{
+		for (auto& observer : this->m_Observers)
+		{
+			observer->onNotify(event, data);
+		}
+	}
+
+	void EventManager::notify(Event event, glm::vec4 data)
+	{
+		for (auto& observer : this->m_Observers)
+		{
+			observer->onNotify(event, data);
 		}
 	}
 

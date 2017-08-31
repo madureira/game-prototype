@@ -13,19 +13,17 @@ namespace core { namespace triggers {
 
 	}
 
-	void TriggerManager::onNotify(Event event, void* pValue)
+	void TriggerManager::onNotify(Event event, glm::vec4 data)
 	{
 		if (event == PLAYER_WALK)
 		{
-			SDL_Rect* playerBox = static_cast<SDL_Rect*>(pValue);
-
 			for (auto& trigger : this->m_Triggers)
 			{
-				TRIGGER_EVENTS tEvent = trigger->getEvent(playerBox->x, playerBox->y, playerBox->w, playerBox->h);
+				TRIGGER_EVENTS tEvent = trigger->getEvent(data.x, data.y, data.z, data.w);
 
 				if (tEvent == ON_ENTER)
 				{
-					this->m_EventManager->notify(PLAYER_TRIGGER_ON, &trigger->getName());
+					this->m_EventManager->notify(PLAYER_TRIGGER_ON, trigger->getName());
 					break;
 				}
 			}
