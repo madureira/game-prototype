@@ -49,7 +49,6 @@ namespace game {
 
 		virtual void onNotify(Event event) override;
 		virtual void onNotify(Event event, std::string data) override;
-		virtual void onNotify(Event event, glm::vec4 data) override {};
 
 	private:
 		void moveUp();
@@ -58,6 +57,5 @@ namespace game {
 		void moveRight();
 		void resetMovements();
 		void notifyDisplacement(std::string direction);
-		void playSoundEffect(std::string soundEffect);
 	};
 }

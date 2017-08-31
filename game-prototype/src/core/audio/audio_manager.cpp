@@ -40,23 +40,36 @@ namespace core { namespace audio {
 		Mix_Quit();
 	}
 
-	void AudioManager::onNotify(Event event, std::string data)
+	void AudioManager::onNotify(Event event, std::string sound, int volume, int loops)
 	{
 		if (event == AUDIO_PLAY_EFFECT)
 		{
-			if (!data.empty())
-			{
-				this->play(data, EFFECT, 100, 0);
-			}
+			this->play(sound, EFFECT, volume, loops);
+		}
+		else if (event == AUDIO_PLAY_MUSIC)
+		{
+			this->play(sound, MUSIC, volume, loops);
 		}
 	}
 
-	bool AudioManager::load(std::string title, std::string audioFile, SOUND_TYPE type)
+	void AudioManager::onNotify(Event event, std::string sound)
+	{
+		if (event == AUDIO_STOP_EFFECT)
+		{
+			this->stop(sound, EFFECT);
+		}
+		else if (event == AUDIO_STOP_MUSIC)
+		{
+			this->stop(sound, MUSIC);
+		}
+	}
+
+	bool AudioManager::load(std::string sound, std::string audioFile, SOUND_TYPE type)
 	{
 		if (type == MUSIC)
 		{
-			this->m_Musics[title] = Mix_LoadMUS(audioFile.c_str());
-			if (this->m_Musics[title] == NULL)
+			this->m_Musics[sound] = Mix_LoadMUS(audioFile.c_str());
+			if (this->m_Musics[sound] == NULL)
 			{
 				printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
 				return false;
@@ -70,10 +83,10 @@ namespace core { namespace audio {
 			if (usedChannels < ALLOCATED_CHANNELS)
 			{
 				freeChannel = usedChannels + 1;
-				this->m_Channels[title] = freeChannel;
+				this->m_Channels[sound] = freeChannel;
 
-				this->m_Effects[title] = Mix_LoadWAV(audioFile.c_str());
-				if (this->m_Effects[title] == NULL)
+				this->m_Effects[sound] = Mix_LoadWAV(audioFile.c_str());
+				if (this->m_Effects[sound] == NULL)
 				{
 					printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 					return false;
@@ -89,7 +102,7 @@ namespace core { namespace audio {
 		return true;
 	}
 
-	void AudioManager::play(std::string title, SOUND_TYPE type, int volume, int loops)
+	void AudioManager::play(std::string sound, SOUND_TYPE type, int volume, int loops)
 	{
 		if (volume >= 100)
 		{
@@ -102,29 +115,29 @@ namespace core { namespace audio {
 
 		if (type == MUSIC)
 		{
-			Mix_PlayMusic(this->m_Musics[title], loops);
+			Mix_PlayMusic(this->m_Musics[sound], loops);
 			Mix_VolumeMusic(volume);
 		}
-		else if (type == EFFECT && Mix_Playing(this->m_Channels[title]) == 0)
+		else if (type == EFFECT && !this->isPlayingEffect(sound))
 		{	
-			Mix_PlayChannel(this->m_Channels[title], this->m_Effects[title], loops);
-			Mix_VolumeChunk(this->m_Effects[title], volume);
+			Mix_PlayChannel(this->m_Channels[sound], this->m_Effects[sound], loops);
+			Mix_VolumeChunk(this->m_Effects[sound], volume);
 		}
 	}
 
-	void AudioManager::pause(std::string title, SOUND_TYPE type)
+	void AudioManager::pause(std::string sound, SOUND_TYPE type)
 	{
 		if (type == MUSIC && Mix_PlayingMusic())
 		{
 			Mix_PauseMusic();
 		}
-		else if (type == EFFECT && Mix_Playing(this->m_Channels[title]))
+		else if (type == EFFECT && this->isPlayingEffect(sound))
 		{
-			Mix_Pause(this->m_Channels[title]);
+			Mix_Pause(this->m_Channels[sound]);
 		}
 	}
 
-	void AudioManager::resume(std::string title, SOUND_TYPE type)
+	void AudioManager::resume(std::string sound, SOUND_TYPE type)
 	{
 		if (type == MUSIC && Mix_PausedMusic())
 		{
@@ -132,20 +145,25 @@ namespace core { namespace audio {
 		}
 		else if (type == EFFECT)
 		{
-			Mix_Resume(this->m_Channels[title]);
+			Mix_Resume(this->m_Channels[sound]);
 		}
 	}
 
-	void AudioManager::stop(std::string title, SOUND_TYPE type)
+	void AudioManager::stop(std::string sound, SOUND_TYPE type)
 	{
 		if (type == MUSIC)
 		{
 			Mix_HaltMusic();
 		}
-		else if (type == EFFECT)
+		else if (type == EFFECT && this->isPlayingEffect(sound))
 		{
-			Mix_HaltChannel(this->m_Channels[title]);
+			Mix_HaltChannel(this->m_Channels[sound]);
 		}
+	}
+
+	bool AudioManager::isPlayingEffect(std::string sound)
+	{
+		return Mix_Playing(this->m_Channels[sound]) != 0;
 	}
 
 } }

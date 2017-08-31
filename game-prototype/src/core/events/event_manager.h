@@ -21,6 +21,7 @@ namespace core { namespace events {
 
 		void notify(Event event);
 		void notify(Event event, std::string data);
+		void notify(Event event, std::string data, int data2, int data3);
 		void notify(Event event, glm::vec4 data);
 	};
 

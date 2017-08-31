@@ -19,8 +19,6 @@ namespace core { namespace collisions {
 		CollisionsManager(std::vector<SDL_Rect> collisions, EventManager* eventManager);
 		~CollisionsManager();
 
-		virtual void onNotify(Event event) override {}
-		virtual void onNotify(Event event, std::string data) override {}
 		virtual void onNotify(Event event, glm::vec4 data) override;
 
 	private:

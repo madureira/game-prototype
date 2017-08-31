@@ -15,7 +15,7 @@ namespace core { namespace collisions {
 
 	void CollisionsManager::onNotify(Event event, glm::vec4 data)
 	{
-		if (event == PLAYER_WALK)
+		if (event == PLAYER_MOVE)
 		{
 			this->m_EventManager->notify((this->isColliding(data)) ? PLAYER_BLOCKED : PLAYER_NOT_BLOCKED);
 		}

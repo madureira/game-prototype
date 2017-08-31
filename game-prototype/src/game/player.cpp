@@ -19,6 +19,7 @@ namespace game {
 	{
 		this->resetMovements();
 		this->m_AnimatedSprite->play("idle");
+		this->m_EventManager->notify(AUDIO_STOP_EFFECT, "steps");
 	}
 
 	void Player::up()
@@ -123,7 +124,7 @@ namespace game {
 	{
 		if (event == PLAYER_TRIGGER_ON)
 		{
-			this->playSoundEffect("enter_door");
+			this->m_EventManager->notify(AUDIO_PLAY_EFFECT, "enter_door", 100, 0);
 		}
 	}
 
@@ -202,13 +203,8 @@ namespace game {
 		}
 
 		glm::vec4 playerData = glm::vec4(playerBox.x, playerBox.y, playerBox.w, playerBox.h);
-		this->m_EventManager->notify(PLAYER_WALK, playerData);
-		this->playSoundEffect("steps");
-	}
-
-	void Player::playSoundEffect(std::string soundEffect)
-	{
-		this->m_EventManager->notify(AUDIO_PLAY_EFFECT, soundEffect);
+		this->m_EventManager->notify(PLAYER_MOVE, playerData);
+		this->m_EventManager->notify(AUDIO_PLAY_EFFECT, "steps", 100, 0);
 	}
 
 }

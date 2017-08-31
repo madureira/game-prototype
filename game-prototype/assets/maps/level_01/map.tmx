@@ -11090,7 +11090,7 @@
   <object id="76" name="door" x="422.88" y="377.13" width="83.875" height="84.5"/>
  </objectgroup>
  <objectgroup name="player">
-  <object id="20" name="Player" x="133.803" y="116.705" width="26" height="23">
+  <object id="20" name="Player" x="123.803" y="125.372" width="26" height="23">
    <properties>
     <property name="speed" type="int" value="2"/>
    </properties>

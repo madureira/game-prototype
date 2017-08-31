@@ -15,11 +15,11 @@ namespace core { namespace triggers {
 
 	void TriggerManager::onNotify(Event event, glm::vec4 data)
 	{
-		if (event == PLAYER_WALK)
+		if (event == PLAYER_MOVE)
 		{
 			for (auto& trigger : this->m_Triggers)
 			{
-				TRIGGER_EVENTS tEvent = trigger->getEvent(data.x, data.y, data.z, data.w);
+				TriggerEvent tEvent = trigger->getEvent(data.x, data.y, data.z, data.w);
 
 				if (tEvent == ON_ENTER)
 				{

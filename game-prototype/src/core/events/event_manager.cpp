@@ -42,6 +42,14 @@ namespace core { namespace events {
 		}
 	}
 
+	void EventManager::notify(Event event, std::string data, int data2, int data3)
+	{
+		for (auto& observer : this->m_Observers)
+		{
+			observer->onNotify(event, data, data2, data3);
+		}
+	}
+
 	void EventManager::notify(Event event, glm::vec4 data)
 	{
 		for (auto& observer : this->m_Observers)

@@ -13,7 +13,7 @@ namespace core { namespace entities {
 		
 	}
 
-	TRIGGER_EVENTS Trigger::getEvent(int x, int y, int w, int h)
+	TriggerEvent Trigger::getEvent(int x, int y, int w, int h)
 	{
 		SDL_Rect target = { x, y, w, h };
 

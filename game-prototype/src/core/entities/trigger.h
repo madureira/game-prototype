@@ -5,7 +5,7 @@
 
 namespace core { namespace entities {
 
-	enum TRIGGER_EVENTS
+	enum TriggerEvent
 	{
 		ON_ENTER,
 		ON_LEAVE,
@@ -26,7 +26,7 @@ namespace core { namespace entities {
 		Trigger(std::string name, int x, int y, unsigned width, unsigned height);
 		~Trigger();
 
-		TRIGGER_EVENTS getEvent(int x, int y, int w, int h);
+		TriggerEvent getEvent(int x, int y, int w, int h);
 
 		inline std::string getName() const { return m_Name; }
 		inline int getX() const { return m_X; }
