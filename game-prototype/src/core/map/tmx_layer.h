@@ -20,10 +20,10 @@ namespace core { namespace tmx {
 		TmxLayer(XMLElement* layerElem);
 		~TmxLayer();
 
-		std::string getName() const { return m_Name; }
-		int getWidth() const { return m_Width;  }
-		int getHeight() const { return m_Height; }
-		std::vector<TmxTile> getTiles() const { return m_Tiles; }
+		inline std::string getName() const { return m_Name; }
+		inline int getWidth() const { return m_Width;  }
+		inline int getHeight() const { return m_Height; }
+		inline std::vector<TmxTile> getTiles() const { return m_Tiles; }
 	};
 
 } }

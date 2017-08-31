@@ -23,7 +23,7 @@ namespace core { namespace tmx {
 		TmxPolyline(XMLElement* polylineElem, int x, int y);
 		~TmxPolyline();
 
-		std::vector<TmxPoint> getPoints() const { return m_Points; };
+		inline std::vector<TmxPoint> getPoints() const { return m_Points; };
 	};
 
 } }

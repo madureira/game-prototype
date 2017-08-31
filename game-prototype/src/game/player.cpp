@@ -2,12 +2,12 @@
 
 namespace game {
 
-	Player::Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, std::vector<SDL_Rect>* collisions, std::vector<glm::vec2>* slopes)
+	Player::Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, EventManager* eventManager)
 	{
 		this->m_AnimatedSprite = new AnimatedSprite(playerTexture, position.x, position.y, animations);
-		this->m_Collisions = collisions;
-		this->m_Slopes = slopes;
 		this->m_Speed = speed;
+		this->m_EventManager = eventManager;
+		this->m_EventManager->addObserver(this);
 	}
 
 	Player::~Player()
@@ -107,44 +107,26 @@ namespace game {
 		return glm::vec2(horizontal, vertical);
 	}
 
+	void Player::onNotify(const Entity& entity, Event event, void* pValue)
+	{
+		if (event == PLAYER_BLOCKED)
+		{
+			this->m_IsBlocked = true;
+		}
+		else if (event == PLAYER_NOT_BLOCKED)
+		{
+			this->m_IsBlocked = false;
+		}
+	}
+
 	bool Player::isBlocked(std::string command)
 	{
-		bool blocked = false;
-
-		SDL_Rect player = this->m_AnimatedSprite->getDestRect();
-		SDL_Rect playerBox = { player.x + 10, player.y + 30, player.w - 30, player.h - 40 };
-
-		if (command == "up") {
-			playerBox.y -= this->getSpeed();
-		}
-		else if (command == "down") {
-			playerBox.y += this->getSpeed();
-		}
-
-		if (command == "right") {
-			playerBox.x += this->getSpeed();
-		}
-		else if (command == "left") {
-			playerBox.x -= this->getSpeed();
-		}
-
-		for (std::vector<SDL_Rect>::iterator collision = this->m_Collisions->begin(); collision != this->m_Collisions->end(); ++collision) {
-			SDL_Rect collisionBox = { collision->x + this->getSpeed(), collision->y + this->getSpeed(), collision->w, collision->h };
-
-			if (playerBox.x <= collisionBox.x + collisionBox.w &&
-				playerBox.x + playerBox.w >= collisionBox.x &&
-				playerBox.y < collisionBox.y + collisionBox.h &&
-				playerBox.h + playerBox.y >= collisionBox.y) {
-				blocked = true;
-				break;
-			}
-		}
-
-		return blocked;
+		return this->m_IsBlocked;
 	}
 
 	void Player::moveUp()
 	{
+		this->notifyDisplacement("up");
 		if (!this->isBlocked("up"))
 		{
 			this->m_IsMovingUp = true;
@@ -156,6 +138,7 @@ namespace game {
 
 	void Player::moveDown()
 	{
+		this->notifyDisplacement("down");
 		if (!this->isBlocked("down"))
 		{
 			this->m_IsMovingDown = true;
@@ -167,6 +150,7 @@ namespace game {
 
 	void Player::moveLeft()
 	{
+		this->notifyDisplacement("left");
 		if (!this->isBlocked("left"))
 		{
 			this->m_IsMovingLeft = true;
@@ -178,6 +162,7 @@ namespace game {
 
 	void Player::moveRight()
 	{
+		this->notifyDisplacement("right");
 		if (!this->isBlocked("right"))
 		{
 			this->m_IsMovingRight = true;
@@ -193,6 +178,27 @@ namespace game {
 		this->m_IsMovingDown = false;
 		this->m_IsMovingRight = false;
 		this->m_IsMovingLeft = false;
+	}
+
+	void Player::notifyDisplacement(std::string direction)
+	{
+		SDL_Rect player = this->m_AnimatedSprite->getDestRect();
+		SDL_Rect playerBox = { player.x + 10, player.y + 25, player.w - 20, player.h - 25 };
+
+		if (direction == "up") {
+			playerBox.y -= this->getSpeed();
+		}
+		else if (direction == "down") {
+			playerBox.y += this->getSpeed();
+		}
+		else if (direction == "right") {
+			playerBox.x += this->getSpeed();
+		}
+		else if (direction == "left") {
+			playerBox.x -= this->getSpeed();
+		}
+
+		this->m_EventManager->notify(*this, PLAYER_WALK, &playerBox);
 	}
 
 }

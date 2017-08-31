@@ -9,7 +9,7 @@ namespace core { namespace tmx {
 
 	MapManager::~MapManager()
 	{
-
+		this->m_Levels.clear();
 	}
 
 	void MapManager::load(std::string title, std::string filePath)
@@ -23,19 +23,20 @@ namespace core { namespace tmx {
 				printf("File %s not found!", filePath);
 			}
 
-			XMLElement* mapElem = document.FirstChildElement("map");
-			if (mapElem == NULL)
+			if (document.FirstChildElement("map") == NULL)
 			{
 				printf("File %s doesn't have a <map> element!", filePath);
 			}
-		
-			this->m_Levels[title] = new Level(new TmxMap(mapElem), this->m_WindowWidth, this->m_WindowHeight);
+			else
+			{
+				this->m_Levels[title] = new Level(new TmxMap(document.FirstChildElement("map")), this->m_WindowWidth, this->m_WindowHeight);
+			}
 		}
 	}
 
 	Level* MapManager::getLevel(std::string title)
 	{
-		return m_Levels.at(title);
+		return this->m_Levels.at(title);
 	}
 
 } }

@@ -4,7 +4,7 @@ namespace core { namespace tmx {
 
 	TmxTile::TmxTile(XMLElement* tileElem)
 	{
-		m_Gid = tileElem->IntAttribute("gid");
+		this->m_Gid = tileElem->IntAttribute("gid");
 	}
 
 	TmxTile::~TmxTile()

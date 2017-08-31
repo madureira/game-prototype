@@ -2,12 +2,25 @@
 
 namespace core { namespace audio {
 
-	AudioManager::AudioManager()
+	AudioManager::AudioManager(EventManager* eventManager)
 	{
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		this->m_EventManager = eventManager;
+
+		int result = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+		if (result < 0)
 		{
 			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		}
+
+		result = Mix_AllocateChannels(ALLOCATED_CHANNELS);
+
+		if (result < 0)
+		{
+			printf("Unable to allocate mixing channels: %s\n", Mix_GetError());
+		}
+
+		this->m_EventManager->addObserver(this);
 	}
 
 	AudioManager::~AudioManager()
@@ -27,6 +40,23 @@ namespace core { namespace audio {
 		Mix_Quit();
 	}
 
+	void AudioManager::onNotify(const Entity& entity, Event event, void* pValue)
+	{
+		if (event == PLAYER_WALK)
+		{
+			this->play("steps", EFFECT, 100, 0);
+		}
+		else if (event == PLAYER_TRIGGER_ON)
+		{
+			std::string trigger = *static_cast<std::string*>(pValue);
+			
+			if (trigger == "enter_door")
+			{
+				this->play(trigger, EFFECT, 100, 0);
+			}
+		}
+	}
+
 	bool AudioManager::load(std::string title, std::string audioFile, SOUND_TYPE type)
 	{
 		if (type == MUSIC)
@@ -40,10 +70,24 @@ namespace core { namespace audio {
 		}
 		else if (type == EFFECT)
 		{
-			this->m_Effects[title] = Mix_LoadWAV(audioFile.c_str());
-			if (this->m_Effects[title] == NULL)
+			int usedChannels = this->m_Channels.size();
+			int freeChannel = 0;
+
+			if (usedChannels < ALLOCATED_CHANNELS)
 			{
-				printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+				freeChannel = usedChannels + 1;
+				this->m_Channels[title] = freeChannel;
+
+				this->m_Effects[title] = Mix_LoadWAV(audioFile.c_str());
+				if (this->m_Effects[title] == NULL)
+				{
+					printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+					return false;
+				}
+			}
+			else
+			{
+				printf("SDL_mixer Error: There is no free channel to allocate!");
 				return false;
 			}
 		}
@@ -53,10 +97,12 @@ namespace core { namespace audio {
 
 	void AudioManager::play(std::string title, SOUND_TYPE type, int volume, int loops)
 	{
-		if (volume >= 100) {
+		if (volume >= 100)
+		{
 			volume = MIX_MAX_VOLUME;
 		}
-		else if (volume < 0) {
+		else if (volume < 0)
+		{
 			volume = 0;
 		}
 
@@ -65,9 +111,9 @@ namespace core { namespace audio {
 			Mix_PlayMusic(this->m_Musics[title], loops);
 			Mix_VolumeMusic(volume);
 		}
-		else if (type == EFFECT)
-		{
-			Mix_PlayChannel(-1, this->m_Effects[title], loops);
+		else if (type == EFFECT && Mix_Playing(this->m_Channels[title]) == 0)
+		{	
+			Mix_PlayChannel(this->m_Channels[title], this->m_Effects[title], loops);
 			Mix_VolumeChunk(this->m_Effects[title], volume);
 		}
 	}
@@ -78,9 +124,9 @@ namespace core { namespace audio {
 		{
 			Mix_PauseMusic();
 		}
-		else if (type == EFFECT && Mix_Playing(-1))
+		else if (type == EFFECT && Mix_Playing(this->m_Channels[title]))
 		{
-			Mix_Pause(-1);
+			Mix_Pause(this->m_Channels[title]);
 		}
 	}
 
@@ -92,7 +138,7 @@ namespace core { namespace audio {
 		}
 		else if (type == EFFECT)
 		{
-			Mix_Resume(-1);
+			Mix_Resume(this->m_Channels[title]);
 		}
 	}
 
@@ -104,7 +150,7 @@ namespace core { namespace audio {
 		}
 		else if (type == EFFECT)
 		{
-			Mix_HaltChannel(-1);
+			Mix_HaltChannel(this->m_Channels[title]);
 		}
 	}
 

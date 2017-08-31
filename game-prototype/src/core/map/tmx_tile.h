@@ -14,7 +14,7 @@ namespace core { namespace tmx {
 		TmxTile(XMLElement* tileElem);
 		~TmxTile();
 
-		int getGid() const { return m_Gid; }
+		inline int getGid() const { return m_Gid; }
 	};
 
 } }

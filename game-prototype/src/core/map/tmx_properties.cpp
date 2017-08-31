@@ -19,7 +19,7 @@ namespace core { namespace tmx {
 
 	TmxProperties::~TmxProperties()
 	{
-
+		this->m_Properties.clear();
 	}
 
 	TmxProperty TmxProperties::getProperty(std::string name)

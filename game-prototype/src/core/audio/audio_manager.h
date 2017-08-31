@@ -5,21 +5,33 @@
 #include <SDL2/SDL.h>
 #include <SDL_mixer.h>
 
+#include "../events/observer.h"
+#include "../events/event_manager.h"
+
 namespace core { namespace audio {
+
+	using namespace events;
 
 	enum SOUND_TYPE {
 		MUSIC,
 		EFFECT
 	};
 
-	class AudioManager {
+	class AudioManager : public Observer
+	{
 	private:
+		static const int ALLOCATED_CHANNELS = 16;
+
 		std::map<std::string, Mix_Music*> m_Musics;
 		std::map<std::string, Mix_Chunk*> m_Effects;
+		std::map<std::string, int> m_Channels;
+		EventManager* m_EventManager;
 
 	public:
-		AudioManager();
+		AudioManager(EventManager* eventManager);
 		~AudioManager();
+
+		virtual void onNotify(const Entity& entity, Event event, void* pValue);
 
 		bool load(std::string title, std::string audioFile, SOUND_TYPE type);
 		void play(std::string title, SOUND_TYPE type, int volume, int loops);

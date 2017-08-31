@@ -17,9 +17,9 @@ namespace core { namespace tmx {
 		TmxImage(XMLElement* imageElem);
 		~TmxImage();
 
-		std::string getSource() const { return m_Source; }
-		int getWidth() const { return m_Width; }
-		int getHeight() const { return m_Height; }
+		inline std::string getSource() const { return m_Source; }
+		inline int getWidth() const { return m_Width; }
+		inline int getHeight() const { return m_Height; }
 	};
 
 } }

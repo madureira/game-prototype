@@ -8,6 +8,7 @@
 #include "../core/entities/animated_sprite.h"
 #include "../core/inputs/input.h"
 #include "../core/animations/animation.h"
+#include "../core/events/event_manager.h"
 
 namespace game {
 
@@ -16,12 +17,13 @@ namespace game {
 	using namespace inputs;
 	using namespace entities;
 	using namespace animations;
+	using namespace events;
 
-	class Player : public GameActor {
+	class Player : public GameActor, Observer {
 	private:
 		AnimatedSprite* m_AnimatedSprite;
-		std::vector<SDL_Rect>* m_Collisions;
-		std::vector<glm::vec2>* m_Slopes;
+		EventManager* m_EventManager;
+
 		int m_Frames;
 		bool m_IsBlocked;
 		bool m_IsMovingUp;
@@ -31,7 +33,7 @@ namespace game {
 		int m_Speed;
 
 	public:
-		Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, std::vector<SDL_Rect>* collisions, std::vector<glm::vec2>* slopes);
+		Player(SDL_Texture* playerTexture, glm::vec2 position, unsigned int speed, std::vector<Animation> animations, EventManager* eventManager);
 		~Player();
 
 		void idle();
@@ -52,6 +54,8 @@ namespace game {
 		inline bool isMovingRight() { return m_IsMovingRight; }
 		inline int getSpeed() { return m_Speed; }
 
+		virtual void onNotify(const Entity& entity, Event event, void* pValue);
+
 	private:
 		bool isBlocked(std::string command);
 		void moveUp();
@@ -59,6 +63,6 @@ namespace game {
 		void moveLeft();
 		void moveRight();
 		void resetMovement();
-
+		void notifyDisplacement(std::string direction);
 	};
 }

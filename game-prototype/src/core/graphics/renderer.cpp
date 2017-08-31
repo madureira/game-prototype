@@ -33,11 +33,11 @@ namespace core { namespace graphics {
 
 	Renderer::~Renderer()
 	{
-		for (std::map<std::string, SDL_Texture*>::iterator itr = m_SpriteSheets.begin(); itr != m_SpriteSheets.end(); itr++)
+		for (std::map<std::string, SDL_Texture*>::iterator itr = this->m_SpriteSheets.begin(); itr != this->m_SpriteSheets.end(); itr++)
 		{
 			SDL_DestroyTexture(itr->second);
 		}
-		m_SpriteSheets.clear();
+		this->m_SpriteSheets.clear();
 
 		delete this->m_FPS;
 		SDL_DestroyTexture(this->m_TargetTexture);
@@ -91,7 +91,8 @@ namespace core { namespace graphics {
 
 	SDL_Texture* Renderer::createTexture(const std::string &filePath)
 	{
-		if (this->m_SpriteSheets.count(filePath) == 0) {
+		if (this->m_SpriteSheets.count(filePath) == 0)
+		{
 			SDL_Surface* temp = IMG_Load(filePath.c_str());
 			if (temp == NULL)
 			{
@@ -111,9 +112,26 @@ namespace core { namespace graphics {
 			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
-			for (std::vector<SDL_Rect>::iterator collision = collisions.begin(); collision != collisions.end(); ++collision) {
+			for (std::vector<SDL_Rect>::iterator collision = collisions.begin(); collision != collisions.end(); ++collision)
+			{
 				SDL_Rect collisionRect = { collision->x, collision->y, collision->w, collision->h };
 				SDL_RenderFillRect(this->m_Renderer, &collisionRect);
+			}
+			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
+		}
+	}
+
+	void Renderer::showTriggers(std::vector<Trigger*> triggers)
+	{
+		if (this->m_DebugMode)
+		{
+			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
+			SDL_SetRenderDrawColor(this->m_Renderer, 255, 0, 0, 130); // green alpha
+			for (auto& trigger : triggers)
+			{
+				SDL_Rect triggerRect = { trigger->getX(), trigger->getY(), trigger->getWidth(), trigger->getHeight() };
+				SDL_RenderFillRect(this->m_Renderer, &triggerRect);
 			}
 			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
 		}

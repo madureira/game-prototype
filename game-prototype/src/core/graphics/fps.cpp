@@ -18,9 +18,7 @@ namespace core { namespace graphics {
 
 	FPS::~FPS()
 	{
-		SDL_FreeSurface(this->m_TextSurface);
 		SDL_DestroyTexture(this->m_TargetTexture);
-		SDL_DestroyTexture(this->m_Text);
 		TTF_CloseFont(this->m_Font);
 	}
 

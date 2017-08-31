@@ -12,6 +12,9 @@
 #include "../core/inputs/input.h"
 #include "../core/map/map_manager.h"
 #include "../core/map/level.h"
+#include "../core/events/event_manager.h"
+#include "../core/triggers/trigger_manager.h"
+#include "../core/collisions/collisions_manager.h"
 #include "player.h"
 
 namespace game {
@@ -23,6 +26,9 @@ namespace game {
 	using namespace entities;
 	using namespace animations;
 	using namespace audio;
+	using namespace events;
+	using namespace triggers;
+	using namespace collisions;
 
 	class Game {
 	public:

@@ -16,22 +16,22 @@ namespace core { namespace tmx {
 			int pointX = (int)px + x;
 			int pointY = (int)py + y;
 
-			m_Points.push_back(TmxPoint({ pointX, pointY }));
+			this->m_Points.push_back(TmxPoint({ pointX, pointY }));
 
 			token = strtok_s(0, " ", &next_token);
 		}
 
 		free(pointsLine);
 
-		if (m_Points.size() < 3) // check if is a poligon
+		if (this->m_Points.size() < 3) // check if is a poligon
 		{
-			m_Points.clear();
+			this->m_Points.clear();
 		}
 	}
 
 	TmxPolyline::~TmxPolyline()
 	{
-
+		this->m_Points.clear();
 	}
 
 } }

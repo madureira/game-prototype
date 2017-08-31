@@ -22,13 +22,13 @@ namespace core { namespace tmx {
 		TmxTileset(XMLElement* tilesetElem);
 		~TmxTileset();
 
-		int getFirstGid() const { return m_FirstGid; }
-		std::string getName() const { return m_Name; }
-		int getTileWidth() const { return m_TileWidth; }
-		int getTileHeight() const { return m_TileHeight; }
-		int getTileCount() const { return m_TileCount; }
-		int getColumns() const { return m_Columns; }
-		TmxImage* getImage() const { return m_Image; }
+		inline int getFirstGid() const { return m_FirstGid; }
+		inline std::string getName() const { return m_Name; }
+		inline int getTileWidth() const { return m_TileWidth; }
+		inline int getTileHeight() const { return m_TileHeight; }
+		inline int getTileCount() const { return m_TileCount; }
+		inline int getColumns() const { return m_Columns; }
+		inline TmxImage* getImage() const { return m_Image; }
 	};
 
 } }

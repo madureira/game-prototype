@@ -20,6 +20,7 @@ namespace core { namespace tmx {
 	public:
 		MapManager(unsigned int winWidth, unsigned int winHeight);
 		~MapManager();
+
 		void load(std::string title, std::string filePath);
 		Level* getLevel(std::string title);
 	};

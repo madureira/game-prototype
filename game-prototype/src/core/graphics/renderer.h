@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
 #include "../entities/sprite.h"
+#include "../entities/trigger.h"
 #include "fps.h"
 
 namespace core { namespace graphics {
@@ -38,6 +39,7 @@ namespace core { namespace graphics {
 		void setRendererSize(unsigned int width, unsigned int height);
 		SDL_Texture* createTexture(const std::string &filePath);
 		void showCollisions(std::vector<SDL_Rect> collisions);
+		void showTriggers(std::vector<Trigger*> triggers);
 
 	private:
 		void initFPSCounter();

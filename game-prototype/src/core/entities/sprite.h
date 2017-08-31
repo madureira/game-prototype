@@ -5,7 +5,8 @@
 
 namespace core { namespace entities {
 
-	class Sprite {
+	class Sprite
+	{
 	protected:
 		SDL_Texture* m_Texture;
 		SDL_Rect m_TextureRect;

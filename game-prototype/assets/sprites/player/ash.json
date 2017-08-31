@@ -191,7 +191,7 @@
   "meta": {
     "app": "http://www.aseprite.org/",
     "version": "1.1.13",
-    "image": "C:\\Users\\rafael\\projects\\workspace\\game-prototype\\game-prototype\\assets\\sprites\\player\\ash.png",
+    "image": "ash.png",
     "format": "RGBA8888",
     "size": {
       "w": 256,

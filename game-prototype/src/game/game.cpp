@@ -18,13 +18,6 @@ namespace game {
 		Renderer renderer = window.createRenderer();
 		Input input(&window);
 
-		AudioManager audioManager;
-		audioManager.load("pokemon", "assets/sounds/musics/pokemon.wav", MUSIC);
-		audioManager.load("step", "assets/sounds/effects/steps.wav", EFFECT);
-
-		AnimationsManager animationsManager;
-		animationsManager.load("player", "assets/sprites/player/ash.json");
-
 		MapManager mapManager(WINDOW_WIDTH, WINDOW_HEIGHT);
 		mapManager.load("level_01", "assets/maps/level_01/map.tmx");
 
@@ -33,19 +26,24 @@ namespace game {
 
 		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
 
-		std::vector<SDL_Rect> collisions = level->getCollisions();
-		std::vector<glm::vec2> slopes = level->getSlopes();
+		EventManager eventManager;
 
-		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &collisions, &slopes);
+		AudioManager audioManager(&eventManager);
+		audioManager.load("pokemon", "assets/sounds/musics/pokemon.wav", MUSIC);
+		audioManager.load("steps", "assets/sounds/effects/steps.wav", EFFECT);
+		audioManager.load("enter_door", "assets/sounds/effects/enter_door.wav", EFFECT);
+		audioManager.play("pokemon", MUSIC, 10, -1);
 
-		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer1 = level->getTilesLayer1();
-		std::vector<std::pair<SDL_Rect, SDL_Rect>> layer2 = level->getTilesLayer2();
+		AnimationsManager animationsManager;
+		animationsManager.load("player", "assets/sprites/player/ash.json");
+
+		TriggerManager triggerManager(level->getTriggers(), &eventManager);
+
+		CollisionsManager collisionsManager(level->getCollisions(), &eventManager);
+
+		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
 
 		StaticSprite levelSprite(renderer.createTexture("assets/maps/level_01/atlas.png"), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
-
-		audioManager.play("pokemon", MUSIC, 10, -1);
-		
-		int playingStep = false;
 
 		Command* command = NULL;
 		while (!window.isClosed())
@@ -55,7 +53,7 @@ namespace game {
 			command = input.handle();
 			command->execute(player);
 
-			for (auto const& tile : layer1) {
+			for (auto const& tile : level->getTilesLayer1()) {
 				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer1
 					levelSprite.setSrcRect(tile.first);
 					levelSprite.setDestRect(tile.second);
@@ -65,7 +63,7 @@ namespace game {
 
 			renderer.draw(player.getSprite());
 
-			for (auto const& tile : layer2) {
+			for (auto const& tile : level->getTilesLayer2()) {
 				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer2
 					levelSprite.setSrcRect(tile.first);
 					levelSprite.setDestRect(tile.second);
@@ -73,23 +71,12 @@ namespace game {
 				}
 			}
 
-			glm::vec2 playerDirection = player.getDirection();
-
-			if (playingStep && (playerDirection.x == 0 && playerDirection.y == 0))
-			{
-				playingStep = false;
-				audioManager.stop("step", EFFECT);
-			}
-			else if (!playingStep && (playerDirection.x != 0 || playerDirection.y != 0)) {
-				playingStep = true;
-				audioManager.play("step", EFFECT, 100, -1);
-			}
-
-			// display collisions *only on debug mode
-			renderer.showCollisions(collisions);
+			// display collisions and triggers (only on debug mode)
+			renderer.showCollisions(level->getCollisions());
+			renderer.showTriggers(level->getTriggers());
 
 			// updates camera position
-			renderer.setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), playerDirection));
+			renderer.setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), player.getDirection()));
 
 			renderer.render();
 		}

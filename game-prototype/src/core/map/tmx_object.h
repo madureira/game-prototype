@@ -13,6 +13,7 @@ namespace core { namespace tmx {
 	class TmxObject {
 	private:
 		int m_Id;
+		std::string m_Name;
 		int m_X;
 		int m_Y;
 		int m_Width;
@@ -25,14 +26,15 @@ namespace core { namespace tmx {
 		TmxObject(XMLElement* objectElem);
 		~TmxObject();
 
-		int getId() const { return m_Id; }
-		int getX() const { return m_X; }
-		int getY() const { return m_Y; }
-		int getWidth() const { return m_Width; }
-		int getHeight() const { return m_Height; }
-		int getVelocity() const { return m_Velocity; }
-		TmxPolyline getPolyline() const { return m_Polyline; }
-		TmxProperties getProperties() const { return m_Properties; }
+		inline int getId() const { return m_Id; }
+		inline std::string getName() const { return m_Name; }
+		inline int getX() const { return m_X; }
+		inline int getY() const { return m_Y; }
+		inline int getWidth() const { return m_Width; }
+		inline int getHeight() const { return m_Height; }
+		inline int getVelocity() const { return m_Velocity; }
+		inline TmxPolyline getPolyline() const { return m_Polyline; }
+		inline TmxProperties getProperties() const { return m_Properties; }
 	};
 
 } }
