@@ -12,32 +12,35 @@ namespace core { namespace inputs {
 
 	}
 
+	void Keyboard::handleKeys()
+	{
+		this->m_HandleKey = SDL_GetKeyboardState(NULL);
+	}
+
 	bool Keyboard::isPressed(KEYBOARD key)
 	{
-		const Uint8 *handleKey = SDL_GetKeyboardState(NULL);
-		
 		bool keyPressed = false;
 
 		switch (key)
 		{
 		case KEY_ESC:
-			keyPressed = handleKey[SDL_GetScancodeFromKey(SDLK_ESCAPE)];
+			keyPressed = this->keyPressed(SDLK_ESCAPE);
 			break;
 
 		case KEY_UP:
-			keyPressed = handleKey[SDL_GetScancodeFromKey(SDLK_UP)];
+			keyPressed = this->keyPressed(SDLK_UP);
 			break;
 
 		case KEY_DOWN:
-			keyPressed = handleKey[SDL_GetScancodeFromKey(SDLK_DOWN)];
+			keyPressed = this->keyPressed(SDLK_DOWN);
 			break;
 
 		case KEY_LEFT:
-			keyPressed = handleKey[SDL_GetScancodeFromKey(SDLK_LEFT)];
+			keyPressed = this->keyPressed(SDLK_LEFT);
 			break;
 
 		case KEY_RIGHT:
-			keyPressed = handleKey[SDL_GetScancodeFromKey(SDLK_RIGHT)];
+			keyPressed = this->keyPressed(SDLK_RIGHT);
 			break;
 
 		default:
@@ -45,6 +48,11 @@ namespace core { namespace inputs {
 		}
 
 		return keyPressed;
+	}
+
+	bool Keyboard::keyPressed(SDL_Keycode key)
+	{
+		return this->m_HandleKey[SDL_GetScancodeFromKey(key)];
 	}
 
 } }

@@ -15,11 +15,18 @@ namespace core { namespace inputs {
 
 	class Keyboard
 	{
+	private:
+		const Uint8* m_HandleKey;
+
 	public:
 		Keyboard();
 		~Keyboard();
 
+		void handleKeys();
 		bool isPressed(KEYBOARD key);
+
+	private:
+		bool keyPressed(SDL_Keycode key);
 	};
 
 } }

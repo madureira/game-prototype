@@ -15,7 +15,7 @@ namespace core { namespace inputs {
 		}
 	}
 
-	void Gamepad::checkConnection()
+	bool Gamepad::connected()
 	{
 		if (SDL_NumJoysticks() > 0 && !this->m_IsControllerConnected)
 		{
@@ -25,6 +25,8 @@ namespace core { namespace inputs {
 		{
 			this->removeController();
 		}
+
+		return this->m_IsControllerConnected;
 	}
 
 	bool Gamepad::isPressed(BUTTON button)
@@ -36,19 +38,19 @@ namespace core { namespace inputs {
 		switch (button)
 		{
 		case BUTTON::DPAD_UP:
-			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
+			buttonPressed = this->isButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_UP);
 			break;
 
 		case BUTTON::DPAD_DOWN:
-			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+			buttonPressed = this->isButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
 			break;
 
 		case BUTTON::DPAD_LEFT:
-			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+			buttonPressed = this->isButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT);
 			break;
 
 		case BUTTON::DPAD_RIGHT:
-			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+			buttonPressed = this->isButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 			break;
 
 		default:
@@ -123,6 +125,11 @@ namespace core { namespace inputs {
 			SDL_GameControllerClose(this->m_Pad);
 			this->m_Pad = NULL;
 		}
+	}
+
+	bool Gamepad::isButtonPressed(SDL_GameControllerButton button)
+	{
+		return SDL_GameControllerGetButton(this->m_Pad, button);
 	}
 
 } }

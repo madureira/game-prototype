@@ -27,7 +27,7 @@ namespace core { namespace inputs {
 	public:
 		Gamepad();
 		~Gamepad();
-		void checkConnection();
+		bool connected();
 		bool isPressed(BUTTON button);
 		bool isLeftStick(AXIS axis);
 
@@ -35,6 +35,7 @@ namespace core { namespace inputs {
 		void initController();
 		void addController();
 		void removeController();
+		bool isButtonPressed(SDL_GameControllerButton button);
 	};
 
 } }

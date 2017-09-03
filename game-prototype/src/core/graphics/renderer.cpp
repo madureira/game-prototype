@@ -50,6 +50,9 @@ namespace core { namespace graphics {
 
 		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 		SDL_RenderClear(this->m_Renderer);
+
+		if (this->m_DebugMode)
+			this->m_FPS->show();
 	}
 
 	void Renderer::draw(entities::Sprite* sprite)
@@ -62,9 +65,6 @@ namespace core { namespace graphics {
 	{
 		SDL_Rect source = { this->m_TargetPosX, this->m_TargetPosY, this->m_WindowWidth, this->m_WindowHeight };
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
-
-		if (this->m_DebugMode)
-			this->m_FPS->show();
 
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);

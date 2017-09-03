@@ -26,33 +26,51 @@ namespace core { namespace inputs {
 
 	Command* Input::handle()
 	{
+		bool up = false;
+		bool down = false;
+		bool left = false;
+		bool right = false;
+
+		bool keyUp = false;
+		bool keyDown = false;
+		bool keyLeft = false;
+		bool keyRight = false;
+
+		bool dPadUp = false;
+		bool dPadDown = false;
+		bool dPadLeft = false;
+		bool dPadRight = false;
+
+		bool axisUp = false;
+		bool axisDown = false;
+		bool axisLeft = false;
+		bool axisRight = false;
+
 		SDL_PumpEvents();
+
+		keyboard->handleKeys();
 
 		if (SDL_QuitRequested() || this->keyboard->isPressed(KEYBOARD::KEY_ESC)) {
 			this->m_Window->close();
 		}
 
-		gamepad->checkConnection();
+		keyUp = this->keyboard->isPressed(KEYBOARD::KEY_UP);
+		keyDown = this->keyboard->isPressed(KEYBOARD::KEY_DOWN);
+		keyLeft = this->keyboard->isPressed(KEYBOARD::KEY_LEFT);
+		keyRight = this->keyboard->isPressed(KEYBOARD::KEY_RIGHT);
 
-		bool up;
-		bool down;
-		bool left;
-		bool right;
+		if (gamepad->connected())
+		{
+			dPadUp = this->gamepad->isPressed(BUTTON::DPAD_UP);
+			dPadDown = this->gamepad->isPressed(BUTTON::DPAD_DOWN);
+			dPadLeft = this->gamepad->isPressed(BUTTON::DPAD_LEFT);
+			dPadRight = this->gamepad->isPressed(BUTTON::DPAD_RIGHT);
 
-		bool keyUp = this->keyboard->isPressed(KEYBOARD::KEY_UP);
-		bool keyDown = this->keyboard->isPressed(KEYBOARD::KEY_DOWN);
-		bool keyLeft = this->keyboard->isPressed(KEYBOARD::KEY_LEFT);
-		bool keyRight = this->keyboard->isPressed(KEYBOARD::KEY_RIGHT);
-
-		bool dPadUp = this->gamepad->isPressed(BUTTON::DPAD_UP);
-		bool dPadDown = this->gamepad->isPressed(BUTTON::DPAD_DOWN);
-		bool dPadLeft = this->gamepad->isPressed(BUTTON::DPAD_LEFT);
-		bool dPadRight = this->gamepad->isPressed(BUTTON::DPAD_RIGHT);
-
-		bool axisUp = this->gamepad->isLeftStick(AXIS::AXIS_UP);
-		bool axisDown = this->gamepad->isLeftStick(AXIS::AXIS_DOWN);
-		bool axisLeft = this->gamepad->isLeftStick(AXIS::AXIS_LEFT);
-		bool axisRight = this->gamepad->isLeftStick(AXIS::AXIS_RIGHT);
+			axisUp = this->gamepad->isLeftStick(AXIS::AXIS_UP);
+			axisDown = this->gamepad->isLeftStick(AXIS::AXIS_DOWN);
+			axisLeft = this->gamepad->isLeftStick(AXIS::AXIS_LEFT);
+			axisRight = this->gamepad->isLeftStick(AXIS::AXIS_RIGHT);
+		}
 
 		up = (dPadUp || axisUp || keyUp);
 		down = (dPadDown || axisDown || keyDown);
