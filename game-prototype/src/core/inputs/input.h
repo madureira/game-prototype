@@ -11,6 +11,7 @@
 #include "up_right_command.h"
 #include "down_left_command.h"
 #include "down_right_command.h"
+#include "gamepad.h"
 
 namespace core { namespace inputs {
 
@@ -19,7 +20,6 @@ namespace core { namespace inputs {
 	class Input {
 	private:
 		Window* m_Window;
-		SDL_GameController* m_Pad;
 		Command* m_Idle;
 		Command* m_Up;
 		Command* m_Down;
@@ -29,18 +29,13 @@ namespace core { namespace inputs {
 		Command* m_UpRight;
 		Command* m_DownRight;
 		Command* m_DownLeft;
-		bool m_IsControllerConnected;
+		Gamepad* gamepad;
 
 	public:
 		Input(Window* window);
 		~Input();
 
 		Command* handle();
-
-	private:
-		void initController();
-		void addController();
-		void removeController();
 	};
 
 } }

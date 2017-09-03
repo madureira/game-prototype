@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <string>
-#include "../libs/tinyxml2.h"
+#include "../../libs/tinyxml2.h"
 #include "tmx_polyline.h"
 #include "tmx_properties.h"
 

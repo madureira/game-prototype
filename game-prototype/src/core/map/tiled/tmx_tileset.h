@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../libs/tinyxml2.h"
+#include "../../libs/tinyxml2.h"
 #include "tmx_image.h"
 
 namespace core { namespace tmx {

@@ -15,29 +15,12 @@ namespace core { namespace inputs {
 		this->m_UpRight = new UpRightCommand();
 		this->m_DownLeft = new DownLeftCommand();
 		this->m_DownRight = new DownRightCommand();
-		this->m_Pad = NULL;
-
-		this->initController();
+		this->gamepad = new Gamepad();
 	}
 
 	Input::~Input()
 	{
-		if (this->m_IsControllerConnected)
-		{
-			SDL_GameControllerClose(this->m_Pad);
-		}
-	}
-
-	void Input::initController()
-	{
-		int i = 0;
-		for (i; i < SDL_NumJoysticks(); ++i) {
-			if (SDL_IsGameController(i)) {
-				this->m_Pad = SDL_GameControllerOpen(i);
-				this->m_IsControllerConnected = true;
-				this->addController();
-			}
-		}
+		delete this->gamepad;
 	}
 
 	Command* Input::handle()
@@ -50,14 +33,7 @@ namespace core { namespace inputs {
 			this->m_Window->close();
 		}
 
-		if (SDL_NumJoysticks() > 0 && !this->m_IsControllerConnected)
-		{
-			this->initController();
-		}
-		else if (SDL_NumJoysticks() == 0 && this->m_IsControllerConnected)
-		{
-			this->removeController();
-		}
+		gamepad->checkConnection();
 
 		bool up;
 		bool down;
@@ -69,45 +45,15 @@ namespace core { namespace inputs {
 		bool keyLeft = handleKey[SDL_GetScancodeFromKey(SDLK_LEFT)];
 		bool keyRight = handleKey[SDL_GetScancodeFromKey(SDLK_RIGHT)];
 
-		bool dPadUp = false;
-		bool dPadDown = false;
-		bool dPadLeft = false;
-		bool dPadRight = false;
+		bool dPadUp = gamepad->isPressed(DPAD_UP);
+		bool dPadDown = gamepad->isPressed(DPAD_DOWN);
+		bool dPadLeft = gamepad->isPressed(DPAD_LEFT);
+		bool dPadRight = gamepad->isPressed(DPAD_RIGHT);
 
-		bool axisUp = false;
-		bool axisDown = false;
-		bool axisLeft = false;
-		bool axisRight = false;
-
-		if (m_IsControllerConnected)
-		{
-			dPadUp = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
-			dPadDown = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-			dPadLeft = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-			dPadRight = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-
-			int leftStickDead = 15000;
-			int leftStickX = SDL_GameControllerGetAxis(this->m_Pad, SDL_CONTROLLER_AXIS_LEFTX);
-			int leftStickY = SDL_GameControllerGetAxis(this->m_Pad, SDL_CONTROLLER_AXIS_LEFTY);
-
-			if (leftStickY < -leftStickDead)
-			{
-				axisUp = true;
-			}
-			else if (leftStickY > leftStickDead)
-			{
-				axisDown = true;
-			}
-
-			if (leftStickX < -leftStickDead)
-			{
-				axisLeft = true;
-			}
-			else if (leftStickX > leftStickDead)
-			{
-				axisRight = true;
-			}
-		}
+		bool axisUp = gamepad->isLeftStick(AXIS_UP);
+		bool axisDown = gamepad->isLeftStick(AXIS_DOWN);
+		bool axisLeft = gamepad->isLeftStick(AXIS_LEFT);
+		bool axisRight = gamepad->isLeftStick(AXIS_RIGHT);
 
 		up = (dPadUp || axisUp || keyUp);
 		down = (dPadDown || axisDown || keyDown);
@@ -139,26 +85,6 @@ namespace core { namespace inputs {
 			return this->m_Right;
 
 		return this->m_Idle;
-	}
-
-	void Input::addController()
-	{
-		if (this->m_IsControllerConnected) {
-			SDL_Log("%s connected!", SDL_GameControllerName(this->m_Pad));
-			char *mapping;
-			mapping = SDL_GameControllerMapping(this->m_Pad);
-			SDL_free(mapping);
-		}
-	}
-
-	void Input::removeController()
-	{
-		this->m_IsControllerConnected = false;
-		if (this->m_Pad != NULL) {
-			SDL_Log("Removing Controller");
-			SDL_GameControllerClose(this->m_Pad);
-			this->m_Pad = NULL;
-		}
 	}
 
 } }

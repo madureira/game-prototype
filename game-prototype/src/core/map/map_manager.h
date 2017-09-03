@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "../libs/tinyxml2.h"
-#include "tmx_map.h"
+#include "tiled/tmx_map.h"
 #include "level.h"
 
 namespace core { namespace tmx {

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../libs/tinyxml2.h"
+#include "../../libs/tinyxml2.h"
 #include "tmx_tile.h"
 
 namespace core { namespace tmx {

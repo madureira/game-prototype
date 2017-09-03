@@ -38,8 +38,8 @@ namespace core { namespace graphics {
 		void setRendererPosition(glm::vec2 position);
 		void setRendererSize(unsigned int width, unsigned int height);
 		SDL_Texture* createTexture(const std::string &filePath);
-		void showCollisions(std::vector<SDL_Rect> collisions);
-		void showTriggers(std::vector<Trigger*> triggers);
+		void showCollisions(std::vector<SDL_Rect>* collisions);
+		void showTriggers(std::vector<Trigger>* triggers);
 
 	private:
 		void initFPSCounter();

@@ -137,7 +137,7 @@ namespace core { namespace tmx {
 			{
 				for (auto const& trigger : objectGroup->getObjects())
 				{
-					this->m_Triggers.push_back(new Trigger(trigger.getName(), trigger.getX(), trigger.getY(), trigger.getWidth(), trigger.getHeight()));
+					this->m_Triggers.push_back(Trigger(trigger.getName(), trigger.getX(), trigger.getY(), trigger.getWidth(), trigger.getHeight()));
 				}
 			}
 		}
@@ -146,10 +146,6 @@ namespace core { namespace tmx {
 
 	Level::~Level()
 	{
-		for (std::vector<Trigger*>::iterator it = this->m_Triggers.begin(); it != this->m_Triggers.end(); ++it)
-		{
-			delete (*it);
-		}
 		this->m_Triggers.clear();
 	}
 

@@ -13,11 +13,11 @@ namespace core { namespace triggers {
 	class TriggerManager : public Observer
 	{
 	private:
-		std::vector<Trigger*> m_Triggers;
+		std::vector<Trigger> m_Triggers;
 		EventManager* m_EventManager;
 
 	public:
-		TriggerManager(std::vector<Trigger*> triggers, EventManager* eventManager);
+		TriggerManager(std::vector<Trigger> triggers, EventManager* eventManager);
 		~TriggerManager();
 
 		virtual void onNotify(Event event, glm::vec4 data) override;

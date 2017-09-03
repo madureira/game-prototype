@@ -24,10 +24,10 @@ namespace game {
 		Level* level = mapManager.getLevel("level_01");
 		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
 
+		EventManager eventManager;
+
 		AnimationsManager animationsManager;
 		animationsManager.load("player", "assets/sprites/player/ash.json");
-
-		EventManager eventManager;
 
 		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
 
@@ -54,26 +54,24 @@ namespace game {
 			command->execute(player);
 
 			for (auto const& tile : level->getTilesLayer1()) {
-				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer1
-					levelSprite.setSrcRect(tile.first);
-					levelSprite.setDestRect(tile.second);
-					renderer.draw(&levelSprite);
-				}
+				if (!camera.isVisible(tile.second)) continue;
+				levelSprite.setSrcRect(tile.first);
+				levelSprite.setDestRect(tile.second);
+				renderer.draw(&levelSprite);
 			}
 
 			renderer.draw(player.getSprite());
 
 			for (auto const& tile : level->getTilesLayer2()) {
-				if (camera.isVisible(tile.second)) { // draws only visible tiles on layer2
-					levelSprite.setSrcRect(tile.first);
-					levelSprite.setDestRect(tile.second);
-					renderer.draw(&levelSprite);
-				}
+				if (!camera.isVisible(tile.second)) continue;
+				levelSprite.setSrcRect(tile.first);
+				levelSprite.setDestRect(tile.second);
+				renderer.draw(&levelSprite);
 			}
 
 			// display collisions and triggers (only on debug mode)
-			renderer.showCollisions(level->getCollisions());
-			renderer.showTriggers(level->getTriggers());
+			renderer.showCollisions(&level->getCollisions());
+			renderer.showTriggers(&level->getTriggers());
 
 			// updates camera position
 			renderer.setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), player.getDirection()));

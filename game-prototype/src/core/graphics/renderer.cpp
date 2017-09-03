@@ -11,9 +11,7 @@ namespace core { namespace graphics {
 		this->m_Renderer = SDL_CreateRenderer(window, -1, flags);
 
 		if (this->m_Renderer == NULL)
-		{
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create renderer: %s", SDL_GetError());
-		}
 
 		this->m_WindowWidth = winWidth;
 		this->m_WindowHeight = winHeight;
@@ -52,11 +50,6 @@ namespace core { namespace graphics {
 
 		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 		SDL_RenderClear(this->m_Renderer);
-
-		if (this->m_DebugMode)
-		{
-			this->m_FPS->show();
-		}
 	}
 
 	void Renderer::draw(entities::Sprite* sprite)
@@ -69,6 +62,9 @@ namespace core { namespace graphics {
 	{
 		SDL_Rect source = { this->m_TargetPosX, this->m_TargetPosY, this->m_WindowWidth, this->m_WindowHeight };
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
+
+		if (this->m_DebugMode)
+			this->m_FPS->show();
 
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);
@@ -105,32 +101,32 @@ namespace core { namespace graphics {
 		return this->m_SpriteSheets[filePath];
 	}
 
-	void Renderer::showCollisions(std::vector<SDL_Rect> collisions)
+	void Renderer::showCollisions(std::vector<SDL_Rect>* collisions)
 	{
 		if (this->m_DebugMode)
 		{
 			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
-			for (std::vector<SDL_Rect>::iterator collision = collisions.begin(); collision != collisions.end(); ++collision)
+			for (auto& collision : *collisions)
 			{
-				SDL_Rect collisionRect = { collision->x, collision->y, collision->w, collision->h };
+				SDL_Rect collisionRect = { collision.x, collision.y, collision.w, collision.h };
 				SDL_RenderFillRect(this->m_Renderer, &collisionRect);
 			}
 			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
 		}
 	}
 
-	void Renderer::showTriggers(std::vector<Trigger*> triggers)
+	void Renderer::showTriggers(std::vector<Trigger>* triggers)
 	{
 		if (this->m_DebugMode)
 		{
 			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 255, 0, 0, 130); // green alpha
-			for (auto& trigger : triggers)
+			for (auto& trigger : *triggers)
 			{
-				SDL_Rect triggerRect = { trigger->getX(), trigger->getY(), trigger->getWidth(), trigger->getHeight() };
+				SDL_Rect triggerRect = { trigger.getX(), trigger.getY(), trigger.getWidth(), trigger.getHeight() };
 				SDL_RenderFillRect(this->m_Renderer, &triggerRect);
 			}
 			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again

@@ -10,7 +10,7 @@ namespace core { namespace collisions {
 
 	CollisionsManager::~CollisionsManager()
 	{
-
+		m_Collisions.clear();
 	}
 
 	void CollisionsManager::onNotify(Event event, glm::vec4 data)

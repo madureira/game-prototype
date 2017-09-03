@@ -20,12 +20,12 @@ namespace core { namespace tmx {
 
 			if (document.ErrorID())
 			{
-				printf("File %s not found!", filePath);
+				printf("File %s not found!", filePath.c_str());
 			}
 
 			if (document.FirstChildElement("map") == NULL)
 			{
-				printf("File %s doesn't have a <map> element!", filePath);
+				printf("File %s doesn't have a <map> element!", filePath.c_str());
 			}
 			else
 			{

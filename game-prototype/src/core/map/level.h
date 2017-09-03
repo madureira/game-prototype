@@ -4,7 +4,7 @@
 #include <glm/vec2.hpp>
 #include <vector>
 #include <string>
-#include "tmx_map.h"
+#include "tiled/tmx_map.h"
 #include "../entities/trigger.h"
 
 namespace core { namespace tmx {
@@ -27,7 +27,7 @@ namespace core { namespace tmx {
 		std::vector<std::pair<SDL_Rect, SDL_Rect>> m_TilesLayer2;
 		std::vector<SDL_Rect> m_Collisions;
 		std::vector<glm::vec2> m_Slopes;
-		std::vector<Trigger*> m_Triggers;
+		std::vector<Trigger> m_Triggers;
 		SDL_Rect m_Camera;
 		glm::vec2 m_PlayerPosition;
 		unsigned int m_CameraSpeed;
@@ -55,7 +55,7 @@ namespace core { namespace tmx {
 		inline SDL_Rect getCamera() const { return m_Camera; };
 		inline unsigned int getCameraSpeed() const { return m_CameraSpeed; }
 		inline unsigned int getPlayerSpeed() const { return m_PlayerSpeed; }
-		inline std::vector<Trigger*> getTriggers() { return m_Triggers; };
+		inline std::vector<Trigger> getTriggers() { return m_Triggers; };
 	};
 
 } }

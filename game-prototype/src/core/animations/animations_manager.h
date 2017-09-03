@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "ase_parse.h"
+#include "aseprite/ase_parse.h"
 
 namespace core { namespace animations {
 

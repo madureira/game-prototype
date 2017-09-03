@@ -2,7 +2,7 @@
 
 namespace core { namespace triggers {
 
-	TriggerManager::TriggerManager(std::vector<Trigger*> triggers, EventManager* eventManager)
+	TriggerManager::TriggerManager(std::vector<Trigger> triggers, EventManager* eventManager)
 		: m_Triggers(triggers), m_EventManager(eventManager)
 	{
 		this->m_EventManager->addObserver(this);
@@ -10,7 +10,7 @@ namespace core { namespace triggers {
 
 	TriggerManager::~TriggerManager()
 	{
-
+		this->m_Triggers.clear();
 	}
 
 	void TriggerManager::onNotify(Event event, glm::vec4 data)
@@ -19,11 +19,11 @@ namespace core { namespace triggers {
 		{
 			for (auto& trigger : this->m_Triggers)
 			{
-				TriggerEvent tEvent = trigger->getEvent(data.x, data.y, data.z, data.w);
+				TriggerEvent tEvent = trigger.getEvent(data.x, data.y, data.z, data.w);
 
 				if (tEvent == ON_ENTER)
 				{
-					this->m_EventManager->notify(PLAYER_TRIGGER_ON, trigger->getName());
+					this->m_EventManager->notify(PLAYER_TRIGGER_ON, trigger.getName());
 					break;
 				}
 			}

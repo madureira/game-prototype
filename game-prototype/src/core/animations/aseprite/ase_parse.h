@@ -4,10 +4,10 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "../libs/json.hpp"
+#include "../../libs/json.hpp"
+#include "../animation.h"
 #include "ase_frames.h"
 #include "ase_meta.h"
-#include "animation.h"
 
 namespace core { namespace ase {
 
