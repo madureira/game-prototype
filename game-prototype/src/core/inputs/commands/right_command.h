@@ -1,14 +1,14 @@
 #pragma once
 
-#include "command.h"
+#include "../command.h"
 
 namespace core { namespace inputs {
 
-	class DownCommand : public Command
+	class RightCommand : public Command
 	{
 	public:
 		virtual void execute(GameActor& actor) {
-			actor.down();
+			actor.right();
 		}
 	};
 

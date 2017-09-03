@@ -29,64 +29,68 @@ namespace core { namespace inputs {
 
 	bool Gamepad::isPressed(BUTTON button)
 	{
-		if (!m_IsControllerConnected) return false;
+		if (!this->m_IsControllerConnected) return false;
 
-		bool buttonState = false;
+		bool buttonPressed = false;
 
 		switch (button)
 		{
-		case DPAD_UP:
-			buttonState = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
+		case BUTTON::DPAD_UP:
+			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
 			break;
-		case DPAD_DOWN:
-			buttonState = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+
+		case BUTTON::DPAD_DOWN:
+			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
 			break;
-		case DPAD_LEFT:
-			buttonState = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+
+		case BUTTON::DPAD_LEFT:
+			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
 			break;
-		case DPAD_RIGHT:
-			buttonState = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+
+		case BUTTON::DPAD_RIGHT:
+			buttonPressed = SDL_GameControllerGetButton(this->m_Pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 			break;
+
 		default:
 			break;
 		}
 
-		return buttonState;
+		return buttonPressed;
 	}
 
 	bool Gamepad::isLeftStick(AXIS axis)
 	{
-		if (!m_IsControllerConnected) return false;
+		if (!this->m_IsControllerConnected) return false;
 
 		int stickDead = 15000;
-		bool axisState = false;
+		bool axisMoved = false;
 
 		int stickX = SDL_GameControllerGetAxis(this->m_Pad, SDL_CONTROLLER_AXIS_LEFTX);
 		int stickY = SDL_GameControllerGetAxis(this->m_Pad, SDL_CONTROLLER_AXIS_LEFTY);
 
 		switch (axis)
 		{
-		case AXIS_UP:
-			axisState = stickY < -stickDead;
+		case AXIS::AXIS_UP:
+			axisMoved = stickY < -stickDead;
 			break;
 
-		case AXIS_DOWN:
-			axisState = stickY > stickDead;
+		case AXIS::AXIS_DOWN:
+			axisMoved = stickY > stickDead;
 			break;
 
-		case AXIS_LEFT:
-			axisState = stickX < -stickDead;
+		case AXIS::AXIS_LEFT:
+			axisMoved = stickX < -stickDead;
 			break;
 
-		case AXIS_RIGHT:
-			axisState = stickX > stickDead;
+		case AXIS::AXIS_RIGHT:
+			axisMoved = stickX > stickDead;
 			break;
 
 		default:
 			break;
 		}
 
-		return axisState;
+		return axisMoved;
 	}
 
 	void Gamepad::initController()

@@ -1,17 +1,18 @@
 #pragma once
 
 #include "../graphics/window.h"
-#include "command.h"
-#include "idle_command.h"
-#include "up_command.h"
-#include "down_command.h"
-#include "left_command.h"
-#include "right_command.h"
-#include "up_left_command.h"
-#include "up_right_command.h"
-#include "down_left_command.h"
-#include "down_right_command.h"
 #include "gamepad.h"
+#include "keyboard.h"
+#include "command.h"
+#include "commands/idle_command.h"
+#include "commands/up_command.h"
+#include "commands/down_command.h"
+#include "commands/left_command.h"
+#include "commands/right_command.h"
+#include "commands/up_left_command.h"
+#include "commands/up_right_command.h"
+#include "commands/down_left_command.h"
+#include "commands/down_right_command.h"
 
 namespace core { namespace inputs {
 
@@ -20,6 +21,8 @@ namespace core { namespace inputs {
 	class Input {
 	private:
 		Window* m_Window;
+		Keyboard* keyboard;
+		Gamepad* gamepad;
 		Command* m_Idle;
 		Command* m_Up;
 		Command* m_Down;
@@ -29,7 +32,6 @@ namespace core { namespace inputs {
 		Command* m_UpRight;
 		Command* m_DownRight;
 		Command* m_DownLeft;
-		Gamepad* gamepad;
 
 	public:
 		Input(Window* window);

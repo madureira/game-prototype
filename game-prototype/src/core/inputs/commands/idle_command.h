@@ -1,6 +1,6 @@
 #pragma once
 
-#include "command.h"
+#include "../command.h"
 
 namespace core { namespace inputs {
 
