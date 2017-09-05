@@ -36,6 +36,7 @@ namespace game {
 
 		glm::vec2 getDirection();
 		inline AnimatedSprite* getSprite() { return m_AnimatedSprite; }
+		inline SDL_Rect getPosition() const { return m_AnimatedSprite->getDestRect(); }
 
 		virtual void idle() override;
 		virtual void up() override;

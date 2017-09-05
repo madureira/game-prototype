@@ -36,7 +36,7 @@ namespace core { namespace entities {
 				object.y <= this->m_Y + this->m_Height);
 	}
 
-	glm::vec2 Camera::getPosition(SDL_Rect target, glm::vec2 direction)
+	void Camera::lookAt(SDL_Rect target, glm::vec2 direction)
 	{
 		if (this->m_UpdateY) {
 			// Moving UP
@@ -65,8 +65,6 @@ namespace core { namespace entities {
 				this->m_X += this->m_Speed;
 			}
 		}
-
-		return glm::vec2(this->m_X, this->m_Y);
 	}
 
 } }

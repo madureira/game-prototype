@@ -22,7 +22,12 @@ namespace game {
 		mapManager.load("level_01", "assets/maps/level_01/map.tmx");
 
 		Level* level = mapManager.getLevel("level_01");
+		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
+
 		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
+		renderer.setCamera(&camera);
+		renderer.setCollisions(level->getCollisions());
+		renderer.setTriggers(level->getTriggers());
 
 		EventManager eventManager;
 
@@ -31,10 +36,7 @@ namespace game {
 
 		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
 
-		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
-
 		CollisionsManager collisionsManager(level->getCollisions(), &eventManager);
-
 		TriggerManager triggerManager(level->getTriggers(), &eventManager);
 
 		AudioManager audioManager(&eventManager);
@@ -45,16 +47,15 @@ namespace game {
 
 		StaticSprite levelSprite(renderer.createTexture("assets/maps/level_01/atlas.png"), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 
-		Command* command = NULL;
 		while (!window.isClosed())
 		{
 			renderer.clear();
 
-			command = input.handle();
+			Command* command = input.handle();
 			command->execute(player);
 
-			for (auto const& tile : level->getTilesLayer1()) {
-				if (!camera.isVisible(tile.second)) continue;
+			for (auto const& tile : level->getTilesLayer1())
+			{
 				levelSprite.setSrcRect(tile.first);
 				levelSprite.setDestRect(tile.second);
 				renderer.draw(&levelSprite);
@@ -62,24 +63,18 @@ namespace game {
 
 			renderer.draw(player.getSprite());
 
-			for (auto const& tile : level->getTilesLayer2()) {
-				if (!camera.isVisible(tile.second)) continue;
+			for (auto const& tile : level->getTilesLayer2())
+			{
 				levelSprite.setSrcRect(tile.first);
 				levelSprite.setDestRect(tile.second);
 				renderer.draw(&levelSprite);
 			}
 
-			// display collisions and triggers (only on debug mode)
-			renderer.showCollisions(&level->getCollisions());
-			renderer.showTriggers(&level->getTriggers());
-
-			// updates camera position
-			renderer.setRendererPosition(camera.getPosition(player.getSprite()->getDestRect(), player.getDirection()));
+			camera.lookAt(player.getPosition(), player.getDirection());
 
 			renderer.render();
 		}
 
-		delete command;
 		delete level;
 	}
 

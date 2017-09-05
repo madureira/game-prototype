@@ -23,8 +23,10 @@ namespace core { namespace entities {
 		Camera(SDL_Rect viewport, unsigned int speed, unsigned int levelWidth, unsigned int levelHeight);
 		~Camera();
 
+		void lookAt(SDL_Rect target, glm::vec2 direction);
 		bool isVisible(SDL_Rect object);
-		glm::vec2 getPosition(SDL_Rect target, glm::vec2 direction);
+		inline int getX() { return m_X; }
+		inline int getY() { return m_Y; }
 	};
 
 } }

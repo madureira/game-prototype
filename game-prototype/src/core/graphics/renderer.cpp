@@ -36,6 +36,8 @@ namespace core { namespace graphics {
 			SDL_DestroyTexture(itr->second);
 		}
 		this->m_SpriteSheets.clear();
+		this->m_Collisions.clear();
+		this->m_Triggers.clear();
 
 		delete this->m_FPS;
 		SDL_DestroyTexture(this->m_TargetTexture);
@@ -50,19 +52,26 @@ namespace core { namespace graphics {
 
 		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 		SDL_RenderClear(this->m_Renderer);
-
-		if (this->m_DebugMode)
-			this->m_FPS->show();
 	}
 
 	void Renderer::draw(entities::Sprite* sprite)
 	{
-		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
-		SDL_RenderCopy(this->m_Renderer, sprite->getTexture(), &sprite->getSrcRect(), &sprite->getDestRect());
+		if (this->m_Camera == NULL) throw std::runtime_error("Error: Camera not found! Renderer need a Camera to draw visible sprites");
+		
+		if (this->m_Camera->isVisible(sprite->getDestRect())) // draws only visible sprites
+		{
+			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_RenderCopy(this->m_Renderer, sprite->getTexture(), &sprite->getSrcRect(), &sprite->getDestRect());
+		}
 	}
 
 	void Renderer::render()
 	{
+		this->updateRendererPosition();
+		this->showFps();
+		this->showCollisions();
+		this->showTriggers();
+
 		SDL_Rect source = { this->m_TargetPosX, this->m_TargetPosY, this->m_WindowWidth, this->m_WindowHeight };
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
 
@@ -70,19 +79,6 @@ namespace core { namespace graphics {
 		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);
 		SDL_RenderCopy(this->m_Renderer, this->m_FixedLayer, &winRect, &winRect);
 		SDL_RenderPresent(this->m_Renderer);
-	}
-
-	void Renderer::setRendererPosition(glm::vec2 position)
-	{
-		this->m_TargetPosX = position.x;
-		this->m_TargetPosY = position.y;
-	}
-
-	void Renderer::setRendererSize(unsigned int width, unsigned int height)
-	{
-		this->m_TargetWidth = width;
-		this->m_TargetHeight = height;
-		this->createRendererTarget();
 	}
 
 	SDL_Texture* Renderer::createTexture(const std::string &filePath)
@@ -101,14 +97,21 @@ namespace core { namespace graphics {
 		return this->m_SpriteSheets[filePath];
 	}
 
-	void Renderer::showCollisions(std::vector<SDL_Rect>* collisions)
+	void Renderer::setRendererSize(unsigned int width, unsigned int height)
 	{
-		if (this->m_DebugMode)
+		this->m_TargetWidth = width;
+		this->m_TargetHeight = height;
+		this->createRendererTarget();
+	}
+
+	void Renderer::showCollisions()
+	{
+		if (this->m_DebugMode && !this->m_Collisions.empty())
 		{
 			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
-			for (auto& collision : *collisions)
+			for (auto& collision : this->m_Collisions)
 			{
 				SDL_Rect collisionRect = { collision.x, collision.y, collision.w, collision.h };
 				SDL_RenderFillRect(this->m_Renderer, &collisionRect);
@@ -117,20 +120,26 @@ namespace core { namespace graphics {
 		}
 	}
 
-	void Renderer::showTriggers(std::vector<Trigger>* triggers)
+	void Renderer::showTriggers()
 	{
-		if (this->m_DebugMode)
+		if (this->m_DebugMode && !this->m_Triggers.empty())
 		{
 			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 255, 0, 0, 130); // green alpha
-			for (auto& trigger : *triggers)
+			for (auto& trigger : this->m_Triggers)
 			{
 				SDL_Rect triggerRect = { trigger.getX(), trigger.getY(), trigger.getWidth(), trigger.getHeight() };
 				SDL_RenderFillRect(this->m_Renderer, &triggerRect);
 			}
 			SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255); // set black again
 		}
+	}
+
+	void Renderer::updateRendererPosition()
+	{
+		this->m_TargetPosX = this->m_Camera->getX();
+		this->m_TargetPosY = this->m_Camera->getY();
 	}
 
 	void Renderer::initFPSCounter()
@@ -153,6 +162,12 @@ namespace core { namespace graphics {
 		SDL_Texture* tex = SDL_CreateTexture(this->m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 		SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
 		return tex;
+	}
+
+	void Renderer::showFps()
+	{
+		if (this->m_DebugMode)
+			this->m_FPS->show();
 	}
 
 } }
