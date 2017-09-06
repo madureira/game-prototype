@@ -29,7 +29,7 @@ namespace core { namespace tmx {
 			}
 			else
 			{
-				this->m_Levels[title] = new Level(new TmxMap(document.FirstChildElement("map")), this->m_WindowWidth, this->m_WindowHeight);
+				this->m_Levels[title] = new Level(new TmxMap(document.FirstChildElement("map")), filePath, this->m_WindowWidth, this->m_WindowHeight);
 			}
 		}
 	}

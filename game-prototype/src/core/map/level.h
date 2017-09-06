@@ -1,15 +1,17 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <glm/vec2.hpp>
 #include <vector>
 #include <string>
+#include <SDL2/SDL.h>
+#include <glm/vec2.hpp>
 #include "tiled/tmx_map.h"
 #include "../entities/trigger.h"
+#include "../utils/string_utils.h"
 
 namespace core { namespace tmx {
 
 	using namespace entities;
+	using namespace utils;
 
 	class Level {
 	private:
@@ -34,7 +36,7 @@ namespace core { namespace tmx {
 		unsigned int m_PlayerSpeed;
 
 	public:
-		Level(TmxMap* tmxMap, unsigned int winWidth, unsigned int winHeight);
+		Level(TmxMap* tmxMap, std::string filePath, unsigned int winWidth, unsigned int winHeight);
 		~Level();
 
 		inline std::string getTileSetName() const { return m_TileSetName; }

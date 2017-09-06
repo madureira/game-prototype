@@ -45,7 +45,7 @@ namespace game {
 		audioManager.load("enter_door", "assets/sounds/effects/enter_door.wav", EFFECT);
 		audioManager.play("pokemon", MUSIC, 10, -1);
 
-		StaticSprite levelSprite(renderer.createTexture("assets/maps/level_01/atlas.png"), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
+		StaticSprite levelSprite(renderer.createTexture(level->getTileSetImagePath()), 0, 0, level->getTileSetImageWidth(), level->getTileSetImageHeight());
 
 		while (!window.isClosed())
 		{

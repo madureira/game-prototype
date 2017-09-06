@@ -20,7 +20,7 @@ namespace core { namespace ase {
 
 				if (jStream.find("meta") != jStream.end())
 				{
-					this->parseMeta(jStream, this->getPathFolder(jsonPath));
+					this->parseMeta(jStream, StringUtils::getFolderFromPath(jsonPath));
 				}
 
 				this->buildAnimations();
@@ -70,13 +70,6 @@ namespace core { namespace ase {
 			}
 			this->m_Animations.push_back(Animation(tag.name, this->m_Meta.getWidth(), this->m_Meta.getHeight(), animationFrames));
 		}
-	}
-
-	std::string AseParse::getPathFolder(const std::string& filePath)
-	{
-		size_t found;
-		found = filePath.find_last_of("/\\");
-		return filePath.substr(0, found) + "/";
 	}
 
 } }

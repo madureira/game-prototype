@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "../../utils/string_utils.h" 
 #include "../../libs/json.hpp"
 #include "../animation.h"
 #include "ase_frames.h"
@@ -13,6 +14,7 @@ namespace core { namespace ase {
 
 	using json = nlohmann::json;
 	using namespace animations;
+	using namespace utils;
 
 	class AseParse
 	{
@@ -32,7 +34,6 @@ namespace core { namespace ase {
 		void parseFrames(json &jStream);
 		void parseMeta(json &jStream, std::string directoryPath);
 		void buildAnimations();
-		std::string getPathFolder(const std::string& filePath);
 	};
 
 } }

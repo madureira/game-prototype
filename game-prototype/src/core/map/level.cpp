@@ -2,14 +2,16 @@
 
 namespace core { namespace tmx {
 
-	Level::Level(TmxMap* tmxMap, unsigned int winWidth, unsigned int winHeight)
+	Level::Level(TmxMap* tmxMap, std::string filePath, unsigned int winWidth, unsigned int winHeight)
 	{
+		std::string directory = StringUtils::getFolderFromPath(filePath);
+
 		this->m_TileSetName = tmxMap->getTileset()->getName();
 		this->m_TileSetWidth = tmxMap->getTileset()->getTileWidth();
 		this->m_TileSetHeight = tmxMap->getTileset()->getTileHeight();
 		this->m_TileSetCount = tmxMap->getTileset()->getTileCount();
 		this->m_TileSetColumns = tmxMap->getTileset()->getColumns();
-		this->m_TileSetImagePath = tmxMap->getTileset()->getImage()->getSource();
+		this->m_TileSetImagePath = directory + tmxMap->getTileset()->getImage()->getSource();
 		this->m_TileSetImageWidth = tmxMap->getTileset()->getImage()->getWidth();
 		this->m_TileSetImageHeight = tmxMap->getTileset()->getImage()->getHeight();
 		this->m_LevelWidth = tmxMap->getWidth() * m_TileSetWidth;
