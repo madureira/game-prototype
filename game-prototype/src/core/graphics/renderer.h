@@ -18,20 +18,20 @@ namespace core { namespace graphics {
 	class Renderer {
 	private:
 		SDL_Renderer* m_Renderer;
-		SDL_Texture* m_TargetTexture;
+		SDL_Texture* m_MainLayer;
 		SDL_Texture* m_FixedLayer;
 		Camera* m_Camera;
 		FPS* m_FPS;
 		std::map<std::string, SDL_Texture*> m_SpriteSheets;
 		std::vector<SDL_Rect> m_Collisions;
 		std::vector<Trigger> m_Triggers;
+		unsigned int m_MainLayerWidth;
+		unsigned int m_MainLayerHeight;
+		unsigned int m_WindowWidth;
+		unsigned int m_WindowHeight;
 		bool m_DebugMode;
 		int m_TargetPosX;
 		int m_TargetPosY;
-		unsigned int m_TargetWidth;
-		unsigned int m_TargetHeight;
-		unsigned int m_WindowWidth;
-		unsigned int m_WindowHeight;
 
 	public:
 		Renderer(SDL_Window* SDLWindow, unsigned int winWidth, unsigned int winHeight, bool debugMode);
@@ -48,7 +48,7 @@ namespace core { namespace graphics {
 	private:
 		void initFPSCounter();
 		void createFixedLayer();
-		void createRendererTarget();
+		void createMainLayer();
 		SDL_Texture* createTransparentTargetTexture(unsigned int width, unsigned int height);
 		void showCollisions();
 		void showTriggers();

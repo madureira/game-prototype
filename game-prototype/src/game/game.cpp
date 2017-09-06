@@ -1,4 +1,4 @@
-#include "game.h"
+#include "./game.h"
 
 namespace game {
 
@@ -76,6 +76,11 @@ namespace game {
 		}
 
 		delete level;
+	}
+
+	Game::~Game()
+	{
+
 	}
 
 }

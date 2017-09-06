@@ -15,16 +15,16 @@ namespace core { namespace graphics {
 
 		this->m_WindowWidth = winWidth;
 		this->m_WindowHeight = winHeight;
-		this->m_TargetWidth = winWidth;
-		this->m_TargetHeight = winHeight;
+		this->m_MainLayerWidth = winWidth;
+		this->m_MainLayerHeight = winHeight;
 
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-		SDL_RenderSetLogicalSize(this->m_Renderer, this->m_TargetWidth, this->m_TargetHeight);
+		SDL_RenderSetLogicalSize(this->m_Renderer, this->m_MainLayerWidth, this->m_MainLayerHeight);
 
 		// Background Black 
 		SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255);
 		
-		this->createRendererTarget();
+		this->createMainLayer();
 		this->createFixedLayer();
 		this->initFPSCounter();
 	}
@@ -40,7 +40,7 @@ namespace core { namespace graphics {
 		this->m_Triggers.clear();
 
 		delete this->m_FPS;
-		SDL_DestroyTexture(this->m_TargetTexture);
+		SDL_DestroyTexture(this->m_MainLayer);
 		SDL_DestroyTexture(this->m_FixedLayer);
 		SDL_DestroyRenderer(this->m_Renderer);
 	}
@@ -50,7 +50,7 @@ namespace core { namespace graphics {
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
 		SDL_RenderClear(this->m_Renderer);
 
-		SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+		SDL_SetRenderTarget(this->m_Renderer, this->m_MainLayer);
 		SDL_RenderClear(this->m_Renderer);
 	}
 
@@ -60,7 +60,7 @@ namespace core { namespace graphics {
 		
 		if (this->m_Camera->isVisible(sprite->getDestRect())) // draws only visible sprites
 		{
-			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_SetRenderTarget(this->m_Renderer, this->m_MainLayer);
 			SDL_RenderCopy(this->m_Renderer, sprite->getTexture(), &sprite->getSrcRect(), &sprite->getDestRect());
 		}
 	}
@@ -76,7 +76,7 @@ namespace core { namespace graphics {
 		SDL_Rect winRect = { 0, 0, this->m_WindowWidth, this->m_WindowHeight };
 
 		SDL_SetRenderTarget(this->m_Renderer, NULL);
-		SDL_RenderCopy(this->m_Renderer, this->m_TargetTexture, &source, &winRect);
+		SDL_RenderCopy(this->m_Renderer, this->m_MainLayer, &source, &winRect);
 		SDL_RenderCopy(this->m_Renderer, this->m_FixedLayer, &winRect, &winRect);
 		SDL_RenderPresent(this->m_Renderer);
 	}
@@ -99,16 +99,16 @@ namespace core { namespace graphics {
 
 	void Renderer::setSize(unsigned int width, unsigned int height)
 	{
-		this->m_TargetWidth = width;
-		this->m_TargetHeight = height;
-		this->createRendererTarget();
+		this->m_MainLayerWidth = width;
+		this->m_MainLayerHeight = height;
+		this->createMainLayer();
 	}
 
 	void Renderer::showCollisions()
 	{
 		if (this->m_DebugMode && !this->m_Collisions.empty())
 		{
-			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_SetRenderTarget(this->m_Renderer, this->m_MainLayer);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 68, 165, 26, 130); // green alpha
 			for (auto& collision : this->m_Collisions)
@@ -124,7 +124,7 @@ namespace core { namespace graphics {
 	{
 		if (this->m_DebugMode && !this->m_Triggers.empty())
 		{
-			SDL_SetRenderTarget(this->m_Renderer, this->m_TargetTexture);
+			SDL_SetRenderTarget(this->m_Renderer, this->m_MainLayer);
 			SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(this->m_Renderer, 255, 0, 0, 130); // green alpha
 			for (auto& trigger : this->m_Triggers)
@@ -152,9 +152,9 @@ namespace core { namespace graphics {
 		this->m_FixedLayer = this->createTransparentTargetTexture(this->m_WindowWidth, this->m_WindowHeight);
 	}
 
-	void Renderer::createRendererTarget()
+	void Renderer::createMainLayer()
 	{
-		this->m_TargetTexture = this->createTransparentTargetTexture(this->m_TargetWidth, this->m_TargetHeight);
+		this->m_MainLayer = this->createTransparentTargetTexture(this->m_MainLayerWidth, this->m_MainLayerHeight);
 	}
 
 	SDL_Texture* Renderer::createTransparentTargetTexture(unsigned int width, unsigned int height)

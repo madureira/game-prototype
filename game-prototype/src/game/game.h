@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdlib.h>
 #include <glm/vec2.hpp>
 #include "../core/graphics/window.h"
 #include "../core/graphics/renderer.h"
@@ -33,6 +34,6 @@ namespace game {
 	class Game {
 	public:
 		Game();
-		~Game() {}
+		~Game();
 	};
 }
