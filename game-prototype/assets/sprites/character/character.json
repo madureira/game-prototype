@@ -1,0 +1,65 @@
+{ "frames": [
+   {
+    "filename": "character 0.ase",
+    "frame": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "sourceSize": { "w": 175, "h": 185 },
+    "duration": 400
+   },
+   {
+    "filename": "character 1.ase",
+    "frame": { "x": 175, "y": 0, "w": 175, "h": 185 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "sourceSize": { "w": 175, "h": 185 },
+    "duration": 400
+   },
+   {
+    "filename": "character 2.ase",
+    "frame": { "x": 350, "y": 0, "w": 175, "h": 185 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "sourceSize": { "w": 175, "h": 185 },
+    "duration": 1000
+   },
+   {
+    "filename": "character 3.ase",
+    "frame": { "x": 525, "y": 0, "w": 175, "h": 185 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "sourceSize": { "w": 175, "h": 185 },
+    "duration": 400
+   },
+   {
+    "filename": "character 4.ase",
+    "frame": { "x": 700, "y": 0, "w": 175, "h": 185 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 185 },
+    "sourceSize": { "w": 175, "h": 185 },
+    "duration": 400
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.1.13",
+  "image": "C:\\Users\\rafael\\projects\\workspace\\game-prototype\\game-prototype\\assets\\sprites\\character\\character.png",
+  "format": "RGBA8888",
+  "size": { "w": 875, "h": 185 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 4, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "legs", "opacity": 255, "blendMode": "normal" },
+   { "name": "arms", "opacity": 255, "blendMode": "normal" },
+   { "name": "body", "opacity": 255, "blendMode": "normal" },
+   { "name": "head", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

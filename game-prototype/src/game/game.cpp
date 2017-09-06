@@ -24,7 +24,7 @@ namespace game {
 		Level* level = mapManager.getLevel("level_01");
 		Camera camera(level->getCamera(), level->getCameraSpeed(), level->getLevelWidth(), level->getLevelHeight());
 
-		renderer.setRendererSize(level->getLevelWidth(), level->getLevelHeight());
+		renderer.setSize(level->getLevelWidth(), level->getLevelHeight());
 		renderer.setCamera(&camera);
 		renderer.setCollisions(level->getCollisions());
 		renderer.setTriggers(level->getTriggers());
@@ -34,7 +34,7 @@ namespace game {
 		AnimationsManager animationsManager;
 		animationsManager.load("player", "assets/sprites/player/ash.json");
 
-		Player player(renderer.createTexture("assets/sprites/player/ash.png"), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
+		Player player(renderer.createTexture(animationsManager.getSprite("player")), level->getPlayerPosition(), level->getPlayerSpeed(), animationsManager.getAnimationsTo("player"), &eventManager);
 
 		CollisionsManager collisionsManager(level->getCollisions(), &eventManager);
 		TriggerManager triggerManager(level->getTriggers(), &eventManager);

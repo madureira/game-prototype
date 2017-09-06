@@ -17,7 +17,7 @@ namespace core { namespace ase {
 	class AseParse
 	{
 	private:
-		std::string m_SpriteName;
+		std::string m_SpritePath;
 		std::vector<Animation> m_Animations;
 		std::vector<AseFrames> m_Frames;
 		AseMeta m_Meta;
@@ -26,12 +26,13 @@ namespace core { namespace ase {
 		AseParse(std::string jsonPath);
 		~AseParse();
 		inline std::vector<Animation> getAnimations() const { return m_Animations; }
-		inline std::string getSpriteName() const { return m_SpriteName; }
+		inline std::string getSpritePath() const { return m_SpritePath; }
 
 	private:
 		void parseFrames(json &jStream);
-		void parseMeta(json &jStream);
+		void parseMeta(json &jStream, std::string directoryPath);
 		void buildAnimations();
+		std::string getPathFolder(const std::string& filePath);
 	};
 
 } }

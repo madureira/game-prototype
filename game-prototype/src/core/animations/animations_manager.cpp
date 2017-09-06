@@ -14,16 +14,16 @@ namespace core { namespace animations {
 
 	void AnimationsManager::load(std::string title, std::string animationFile)
 	{
-		if (this->m_SpriteNames.count(animationFile) == 0) {
+		if (this->m_SpritesPath.count(animationFile) == 0) {
 			AseParse aseParse(animationFile);
 			this->m_Animations[title] = aseParse.getAnimations();
-			this->m_SpriteNames[title] = aseParse.getSpriteName();
+			this->m_SpritesPath[title] = aseParse.getSpritePath();
 		}
 	}
 
-	std::string AnimationsManager::getSpriteNameTo(std::string title) const
+	std::string AnimationsManager::getSprite(std::string title) const
 	{
-		return this->m_SpriteNames.at(title);
+		return this->m_SpritesPath.at(title);
 	}
 
 	std::vector<Animation> AnimationsManager::getAnimationsTo(std::string title) const

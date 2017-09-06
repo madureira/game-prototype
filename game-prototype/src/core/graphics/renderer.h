@@ -39,7 +39,7 @@ namespace core { namespace graphics {
 		void clear();
 		void draw(Sprite* sprite);
 		void render();
-		void setRendererSize(unsigned int width, unsigned int height);
+		void setSize(unsigned int width, unsigned int height);
 		SDL_Texture* createTexture(const std::string &filePath);
 		inline void setCamera(Camera* camera) { m_Camera = camera; }
 		inline void setCollisions(std::vector<SDL_Rect> collisions) { m_Collisions = collisions; }

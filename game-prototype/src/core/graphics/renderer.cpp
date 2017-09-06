@@ -97,7 +97,7 @@ namespace core { namespace graphics {
 		return this->m_SpriteSheets[filePath];
 	}
 
-	void Renderer::setRendererSize(unsigned int width, unsigned int height)
+	void Renderer::setSize(unsigned int width, unsigned int height)
 	{
 		this->m_TargetWidth = width;
 		this->m_TargetHeight = height;

@@ -20,7 +20,7 @@ namespace core { namespace ase {
 
 				if (jStream.find("meta") != jStream.end())
 				{
-					this->parseMeta(jStream);
+					this->parseMeta(jStream, this->getPathFolder(jsonPath));
 				}
 
 				this->buildAnimations();
@@ -47,10 +47,10 @@ namespace core { namespace ase {
 		}
 	}
 
-	void AseParse::parseMeta(json &jStream)
+	void AseParse::parseMeta(json &jStream, std::string directoryPath)
 	{
 		this->m_Meta = AseMeta(jStream.find("meta").value());
-		this->m_SpriteName = this->m_Meta.getSpriteName();
+		this->m_SpritePath = directoryPath + this->m_Meta.getSpriteName();
 	}
 
 	void AseParse::buildAnimations()
@@ -70,6 +70,13 @@ namespace core { namespace ase {
 			}
 			this->m_Animations.push_back(Animation(tag.name, this->m_Meta.getWidth(), this->m_Meta.getHeight(), animationFrames));
 		}
+	}
+
+	std::string AseParse::getPathFolder(const std::string& filePath)
+	{
+		size_t found;
+		found = filePath.find_last_of("/\\");
+		return filePath.substr(0, found) + "/";
 	}
 
 } }
