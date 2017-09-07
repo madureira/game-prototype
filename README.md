@@ -1,5 +1,5 @@
 # game-prototype
-A simple 2D top-down game framework, built on top of modern C++11, SDL2 and Lua 5.
+A simple 2D top-down game framework.
 
 [![GitHub version](https://badge.fury.io/gh/madureira%2Fgame-prototype.svg)](https://badge.fury.io/gh/madureira%2Fgame-prototype)
 [![GitHub release](https://img.shields.io/github/release/madureira/game-prototype.svg)]()
@@ -14,14 +14,17 @@ To facilitate game development, the framework integrates with some useful tools:
 ![example](https://raw.githubusercontent.com/madureira/game-prototype/master/game-prototype/assets/game-prototype.gif)
 
 ## Dependencies
-This structure is built using the following libraries:
+This structure is built using the following languages / libraries:
+* [C++11](http://www.stroustrup.com/C++11FAQ.html)
+* [Lua 5.1](http://www.lua.org/)
 * [SDL2](https://www.libsdl.org/)
 * [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/)
 * [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/)
 * [SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/)
-* [Lua 5.1](http://www.lua.org/)
+* [glm](https://glm.g-truc.net/0.9.8/index.html)
 * [TinyXML-2](https://github.com/leethomason/tinyxml2)
 * [nlohmann/json](https://github.com/nlohmann/json)
+* [Luna](http://lua-users.org/wiki/SimplerCppBinding)
 
 ## Importing the project
 If you use [Microsoft Visual Studio Community 2017](https://www.visualstudio.com) to develop, follow the steps below.
