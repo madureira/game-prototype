@@ -9,6 +9,7 @@ Using this structure, you are able to build simple [2D top-down games](https://e
 To facilitate game development, the framework integrates with some useful tools:
 * [Tiled Map Editor](http://www.mapeditor.org/) (Used to build maps based on tiles)
 * [Aseprite](https://www.aseprite.org/) (Used to generates sprites and animations)
+* [Lua](http://www.lua.org/) You can build routines and scripts to describe some behaviors for your game logic.
 
 ![example](https://raw.githubusercontent.com/madureira/game-prototype/master/game-prototype/assets/game-prototype.gif)
 
@@ -18,6 +19,7 @@ This structure is built using the following libraries:
 * [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/)
 * [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/)
 * [SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/)
+* [Lua 5.1](http://www.lua.org/)
 * [TinyXML-2](https://github.com/leethomason/tinyxml2)
 * [nlohmann/json](https://github.com/nlohmann/json)
 
@@ -64,6 +66,7 @@ To be able to build and run our project, we need to configure it. So, let's star
     $(SolutionDir)dependencies\SDL2_image-2.0.1\include
     $(Solutiondir)dependencies\SDL2_mixer-2.0.1\include
     $(SolutionDir)dependencies\SDL2_ttf-2.0.14\include
+    $(SolutionDir)dependencies\lua5.1\include
     $(SolutionDir)dependencies\glm
     ```
 3. Hit the button **OK** to close modal and hit the button **Apply**
@@ -77,6 +80,7 @@ To be able to build and run our project, we need to configure it. So, let's star
     $(SolutionDir)dependencies\SDL2_image-2.0.1\lib\x86
     $(SolutionDir)dependencies\SDL2_mixer-2.0.1\lib\x86
     $(SolutionDir)dependencies\SDL2_ttf-2.0.14\lib\x86
+    $(SolutionDir)dependencies\lua5.1\lib\x86
     ```
 3. Hit the button **OK** to close modal and hit the button **Apply**
 4. On left-side, expand **Linker** and now select **Input**
@@ -87,6 +91,7 @@ To be able to build and run our project, we need to configure it. So, let's star
     SDL2_image.lib
     SDL2_mixer.lib
     SDL2_ttf.lib
+    lua5.1.lib
     ```
 6. Hit the button **OK** to close modal and hit the button **Apply**
 7. On left-side, expand **Linker** and now select **System**
