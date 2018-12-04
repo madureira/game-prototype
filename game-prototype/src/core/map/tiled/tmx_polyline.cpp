@@ -4,21 +4,20 @@ namespace core { namespace tmx {
 
 	TmxPolyline::TmxPolyline(XMLElement* polylineElem, int x, int y)
 	{
-		char *pointsLine = _strdup(polylineElem->Attribute("points"));
+		char *pointsLine = strdup(polylineElem->Attribute("points"));
 
-		char *next_token;
-		char *token = strtok_s(pointsLine, " ", &next_token);
+		char *token = strtok(pointsLine, " ");
 		while (token)
 		{
 			float px, py;
-			sscanf_s(token, "%f,%f", &px, &py);
+			sscanf(token, "%f,%f", &px, &py);
 
 			int pointX = (int)px + x;
 			int pointY = (int)py + y;
 
 			this->m_Points.push_back(TmxPoint({ pointX, pointY }));
 
-			token = strtok_s(0, " ", &next_token);
+			token = strtok(0, " ");
 		}
 
 		free(pointsLine);

@@ -21,9 +21,9 @@ namespace core { namespace graphics {
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 		SDL_RenderSetLogicalSize(this->m_Renderer, this->m_MainLayerWidth, this->m_MainLayerHeight);
 
-		// Background Black 
+		// Background Black
 		SDL_SetRenderDrawColor(this->m_Renderer, 0, 0, 0, 255);
-		
+
 		this->createMainLayer();
 		this->createFixedLayer();
 		this->initFPSCounter();
@@ -57,11 +57,13 @@ namespace core { namespace graphics {
 	void Renderer::draw(entities::Sprite* sprite)
 	{
 		if (this->m_Camera == NULL) throw std::runtime_error("Error: Camera not found! Renderer need a Camera to draw visible sprites");
-		
+
 		if (this->m_Camera->isVisible(sprite->getDestRect())) // draws only visible sprites
 		{
 			SDL_SetRenderTarget(this->m_Renderer, this->m_MainLayer);
-			SDL_RenderCopy(this->m_Renderer, sprite->getTexture(), &sprite->getSrcRect(), &sprite->getDestRect());
+			SDL_Rect src = sprite->getSrcRect();
+			SDL_Rect dest = sprite->getDestRect();
+			SDL_RenderCopy(this->m_Renderer, sprite->getTexture(), &src, &dest);
 		}
 	}
 

@@ -8,7 +8,7 @@
 #undef main
 #include "src/game/game.h"
 
-int main()
+int main(int argc, char *argv[])
 {
 	using namespace game;
 

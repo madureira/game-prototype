@@ -4,13 +4,9 @@ namespace game {
 
 	Game::Game()
 	{
-#ifdef DEBUG
-		static const bool DEBUG_MODE = true;
-		static const bool FULL_SCREEN = false;
-#else
 		static const bool DEBUG_MODE = false;
-		static const bool FULL_SCREEN = true;
-#endif
+		static const bool FULL_SCREEN = false;
+
 		static const int WINDOW_WIDTH = 1280;
 		static const int WINDOW_HEIGHT = 720;
 
