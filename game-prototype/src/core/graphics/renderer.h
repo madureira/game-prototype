@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <stdexcept>
 #include <glm/vec2.hpp>
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
